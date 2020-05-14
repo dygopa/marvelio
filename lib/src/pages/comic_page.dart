@@ -208,7 +208,7 @@ class ComicPage extends StatelessWidget {
                           )
                         : Container(
                             child: Text(
-                              'Error'
+                              'No hay nada que ver aquí'
                             ),
                           )
                         )
