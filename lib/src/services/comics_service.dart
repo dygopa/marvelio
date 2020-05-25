@@ -14,39 +14,9 @@ String _TIMESTAMP = DateTime.now().millisecondsSinceEpoch.toString();
 
 class ComicsService with ChangeNotifier{
   List<Result> comics = [];
-  List<Result> comicsAll = [];
 
   ComicsService(){
-    this.getComicsHome();
     this.getComics();
-  }
-
-  getComicsHome() async{
-
-    var firstChunk = utf8.encode(_TIMESTAMP);
-    var secondChunk = utf8.encode(_PRIVATEKEY);
-    var thirdChunk = utf8.encode(_PUBLICKEY);
-
-    var output = AccumulatorSink<Digest>();
-    var input = md5.startChunkedConversion(output);
-
-    input.add(firstChunk);
-    input.add(secondChunk);
-    input.add(thirdChunk);
-    input.close();
-
-    var digest = output.events.single;
-
-    final url = "${_URL_MARVEL}${_CATEGORY}ts=${_TIMESTAMP}&apikey=${_PUBLICKEY}&hash=${digest}";
-    final resp = await http.get(url);
-
-    final comicsResponse = comicsResponseFromJson(resp.body);
-    
-    final resultado = comicsResponse.data.results;
-
-    this.comics.addAll(resultado);
-
-    notifyListeners();
   }
 
   getComics() async{
@@ -72,7 +42,7 @@ class ComicsService with ChangeNotifier{
     
     final resultado = comicsResponse.data.results;
 
-    this.comicsAll.addAll(resultado);
+    this.comics.addAll(resultado);
 
     notifyListeners();
   }

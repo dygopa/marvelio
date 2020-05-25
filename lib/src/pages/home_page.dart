@@ -271,7 +271,9 @@ void _bottomSheet(BuildContext context, ThemeChanger themeChanger) {
                 )
               ),
               onTap: (){
-                themeChanger.setTheme(ThemeData.light());
+                themeChanger.setTheme(ThemeData.light().copyWith(
+                  primaryColor: Colors.white
+                ));
               },
             )
           ],

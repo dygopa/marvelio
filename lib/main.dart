@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:marvelio/src/pages/comics_page.dart';
 import 'package:provider/provider.dart';
 
-import 'package:marvelio/src/models/comics_model.dart';
-
 import 'package:marvelio/src/pages/home_page.dart';
+import 'package:marvelio/src/pages/comics_page.dart';
 import 'package:marvelio/src/pages/comic_page.dart';
 
 import 'package:marvelio/src/services/characters_service.dart';
@@ -31,7 +29,9 @@ class MyApp extends StatelessWidget {
           create:(_)=>EventsService(),
         ),
         ChangeNotifierProvider<ThemeChanger>(
-          create: (_) => ThemeChanger(ThemeData.light()),
+          create: (_) => ThemeChanger(ThemeData.light().copyWith(
+            primaryColor: Colors.white
+          )),
         )
       ],
       child: MaterialAppWithTheme(),

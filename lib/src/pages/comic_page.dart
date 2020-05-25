@@ -81,15 +81,20 @@ class ComicPage extends StatelessWidget {
                               ),
                               Positioned(
                                 left: MediaQuery.of(context).size.width - 225.0,
-                                child: Hero(
-                                  tag: comic.id,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(20.0),
-                                    child: Container(
-                                      width: 135,
-                                      child: Image(
-                                        image: NetworkImage(comic.thumbnail.path + '/portrait_incredible.jpg'),
-                                        fit: BoxFit.cover,
+                                child: GestureDetector(
+                                  onTap: (){
+                                    showCover(context, comic);
+                                  },
+                                  child: Hero(
+                                    tag: comic.id,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                      child: Container(
+                                        width: 135,
+                                        child: Image(
+                                          image: NetworkImage(comic.thumbnail.path + '/portrait_incredible.jpg'),
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -146,71 +151,90 @@ class ComicPage extends StatelessWidget {
                         ),
                         //Imagenes
                         Container(
+                          padding: EdgeInsets.symmetric(horizontal: 20.0),
                           margin: EdgeInsets.only(bottom: 20.0),
-                          child: Text(
-                            'Imágenes',
-                            style: TextStyle(
-                              fontFamily: 'Gilroy',
-                              fontWeight: FontWeight.w600,
-                              fontSize: 21.0
-                            ),
+                          width: MediaQuery.of(context).size.width,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Container(
+                                margin: EdgeInsets.only(bottom: 20.0),
+                                child: Text(
+                                  'Imágenes',
+                                  style: TextStyle(
+                                    fontFamily: 'Gilroy',
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 21.0
+                                  ),
+                                ),
+                              ),
+                              Container(                      
+                                child: (comicImages.length > 1 )
+                                ? Container(
+                                  height: 261.0,
+                                  child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    physics: BouncingScrollPhysics(),
+                                    itemCount: comicImages.length,
+                                    itemBuilder: (BuildContext context, int index) {
+                                      return _Image(
+                                        comicImage: comicImages[index],
+                                        index: index
+                                      );
+                                    },
+                                  ),
+                                )
+                              : Container(
+                                  child: Text(
+                                    'Sin imágenes'
+                                  ),
+                                )
+                              ),
+                            ],
                           ),
-                        ),
-                        Container(                      
-                          child: (comicImages.length > 1 )
-                          ? Container(
-                            height: 261.0,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              physics: BouncingScrollPhysics(),
-                              itemCount: comicImages.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return _Image(
-                                  comicImage: comicImages[index],
-                                  index: index
-                                );
-                              },
-                            ),
-                          )
-                        : Container(
-                            child: Text(
-                              'Sin imágenes'
-                            ),
-                          )
                         ),
                         //Personajes
-                        Container(
-                          margin: EdgeInsets.only(bottom: 20.0),
-                          child: Text(
-                            'Personajes',
-                            style: TextStyle(
-                              fontFamily: 'Gilroy',
-                              fontWeight: FontWeight.w600,
-                              fontSize: 21.0
-                            ),
+                        Container(              
+                          padding: EdgeInsets.symmetric(horizontal: 20.0),
+                          width: MediaQuery.of(context).size.width,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Container(
+                                margin: EdgeInsets.only(bottom: 20.0),
+                                child: Text(
+                                  'Personajes',
+                                  style: TextStyle(
+                                    fontFamily: 'Gilroy',
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 21.0
+                                  ),
+                                ),
+                              ),
+                              Container(                      
+                                child: (comicCharacters.length> 1 )
+                                ? Container(
+                                  height: 261.0,
+                                  child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    physics: BouncingScrollPhysics(),
+                                    itemCount: comicCharacters.length,
+                                    itemBuilder: (BuildContext context, int index) {
+                                      return Character(
+                                        comicCharacter: comicCharacters[index],
+                                        index: index
+                                      );
+                                    },
+                                  ),
+                                )
+                              : Container(
+                                  child: Text(
+                                    'No hay nada que ver aquí'
+                                  ),
+                                )
+                              )
+                            ],
                           ),
-                        ),
-                        Container(                      
-                          child: (comicCharacters.length> 1 )
-                          ? Container(
-                            height: 261.0,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              physics: BouncingScrollPhysics(),
-                              itemCount: comicCharacters.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return Character(
-                                  comicCharacter: comicCharacters[index],
-                                  index: index
-                                );
-                              },
-                            ),
-                          )
-                        : Container(
-                            child: Text(
-                              'No hay nada que ver aquí'
-                            ),
-                          )
                         )
                       ],
                     ),
@@ -222,6 +246,23 @@ class ComicPage extends StatelessWidget {
         ]
       ),
     );
+  }
+
+  void showCover(BuildContext context, comic){
+    Dialog dialogWithImage = Dialog(
+      child: Container(
+        // height: 200,
+        width: 216,
+        child: Image(
+          image: NetworkImage(comic.thumbnail.path + '/portrait_incredible.jpg'),
+          fit: BoxFit.cover,
+        ),
+      ),
+    );
+    showDialog(
+      context: context, builder: (BuildContext context) => dialogWithImage
+    );
+
   }
 }
 
