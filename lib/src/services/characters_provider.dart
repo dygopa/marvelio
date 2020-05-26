@@ -1,0 +1,47 @@
+import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:convert/convert.dart';
+import 'package:crypto/crypto.dart';
+import 'package:http/http.dart' as http;
+
+// import 'package:marvelio/src/models/comics_model.dart';
+import 'package:marvelio/src/models/characters_model.dart'; 
+
+
+
+class CharactersProvider{
+
+  String _privateKey = "2c835e79761bd3d12a141d4d10f951d989b38f99";
+  String _publicKey = "c0364ab10a40a67baa026a001e7ebe4e";
+  String _timeStamp = DateTime.now().millisecondsSinceEpoch.toString();
+
+  Future<List<Result>> getComicCharacters(int comicId) async{
+
+    // int comicId;
+
+    var firstChunk = utf8.encode(_timeStamp);
+    var secondChunk = utf8.encode(_privateKey);
+    var thirdChunk = utf8.encode(_publicKey);
+
+    var output = AccumulatorSink<Digest>();
+    var input = md5.startChunkedConversion(output);
+
+    input.add(firstChunk);
+    input.add(secondChunk);
+    input.add(thirdChunk);
+    input.close();
+
+    var digest = output.events.single;
+
+    final url = "https://gateway.marvel.com:443/v1/public/comics/${comicId}/characters?ts=${_timeStamp}&apikey=${_publicKey}&hash=${digest}";
+
+    final resp = await http.get(url);
+    final comicCharactersResponse = charactersResponseFromJson(resp.body);
+    final resultado = comicCharactersResponse.data.results;
+
+    // this.characters.addAll(resultado);
+    // print(resultado);
+    return resultado;
+  }
+
+}

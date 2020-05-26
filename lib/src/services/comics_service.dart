@@ -5,19 +5,25 @@ import 'package:crypto/crypto.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:marvelio/src/models/comics_model.dart';
+import 'package:marvelio/src/models/characters_model.dart' as cm; 
 
 String _PRIVATEKEY = "2c835e79761bd3d12a141d4d10f951d989b38f99";
 String _PUBLICKEY = "c0364ab10a40a67baa026a001e7ebe4e";
 String _URL_MARVEL = "http://gateway.marvel.com/v1/public/";
-String _CATEGORY = "comics?formatType=comic&orderBy=-focDate&limit=60&";
+String _CATEGORY = "comics?formatType=comic&orderBy=-issueNumber&limit=60&";
 String _TIMESTAMP = DateTime.now().millisecondsSinceEpoch.toString();
 
 class ComicsService with ChangeNotifier{
   List<Result> comics = [];
+  List<cm.Result> characters = [];
+
+  // Result _comic;
 
   ComicsService(){
     this.getComics();
+    // this.getComicCharacters(int );
   }
+
 
   getComics() async{
 

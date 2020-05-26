@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:marvelio/src/models/comics_model.dart';
+import 'package:marvelio/src/services/characters_provider.dart';
+import 'package:marvelio/src/services/comics_service.dart';
 import 'package:marvelio/src/theme/theme.dart';
 import 'package:provider/provider.dart';
 export 'package:marvelio/src/pages/comic_page.dart';
+import 'package:marvelio/src/models/characters_model.dart' as cm; 
 
+import 'dart:convert';
+import 'package:convert/convert.dart';
+import 'package:crypto/crypto.dart';
+import 'package:http/http.dart' as http;
 
 class ComicPage extends StatelessWidget {
   
@@ -13,7 +20,9 @@ class ComicPage extends StatelessWidget {
     final theme = Provider.of<ThemeChanger>(context).getTheme();     
     final Result comic = ModalRoute.of(context).settings.arguments;
     final List<Thumbnail> comicImages = comic.images;
-    final List<Series> comicCharacters = comic.characters.items;
+    // final charactersProviders =  Provider.of<ComicsService>(context).getComicCharacters(comic.id);
+    final charactersProvider = CharactersProvider();
+
 
     return Scaffold(
       body: ListView(
@@ -211,28 +220,22 @@ class ComicPage extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              Container(                      
-                                child: (comicCharacters.length> 1 )
-                                ? Container(
-                                  height: 261.0,
-                                  child: ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    physics: BouncingScrollPhysics(),
-                                    itemCount: comicCharacters.length,
-                                    itemBuilder: (BuildContext context, int index) {
-                                      return Character(
-                                        comicCharacter: comicCharacters[index],
-                                        index: index
+                              FutureBuilder(
+                                future: charactersProvider.getComicCharacters(comic.id), 
+                                builder: (BuildContext context, AsyncSnapshot<List<cm.Result>> snapshot) {
+                                  if(snapshot.connectionState == ConnectionState.done){
+                                    if(snapshot.hasData){
+                                      return _crearPersonajesView(snapshot.data);
+                                    }else{
+                                      return Text(
+                                        snapshot.error.toString()
                                       );
-                                    },
-                                  ),
-                                )
-                              : Container(
-                                  child: Text(
-                                    'No hay nada que ver aquí'
-                                  ),
-                                )
-                              )
+                                    }
+                                  }else{
+                                    return CircularProgressIndicator();
+                                  }
+                                },
+                              ),
                             ],
                           ),
                         )
@@ -264,6 +267,48 @@ class ComicPage extends StatelessWidget {
     );
 
   }
+
+  Widget _crearPersonajesView(List<cm.Result> personajes) {
+    return SizedBox(
+      height: 200.0,
+      child: (personajes.length > 0 ) 
+      ? PageView.builder(
+        pageSnapping: true,
+        itemCount: personajes.length,
+        controller: PageController(
+          viewportFraction: 0.3,
+          initialPage: 1
+        ),
+        itemBuilder: (context, i) => _personajeTarjeta(personajes[i], context),
+      )
+      : Text(
+        'No hay personajes disponibles'
+      )
+    ); 
+  }
+
+  Widget _personajeTarjeta(cm.Result personaje, BuildContext context) {
+    return GestureDetector(
+      onTap: (){
+        // showCover(context, comic);
+      },
+      child: Container(
+        width: 200.0,
+        child: Hero(
+          tag: personaje.id,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20.0),
+            child: Container(
+              child: Image(
+                image: NetworkImage(personaje.thumbnail.path + '/portrait_incredible.jpg'),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class _Image extends StatelessWidget {
@@ -283,28 +328,6 @@ class _Image extends StatelessWidget {
       child: Image(
         image: NetworkImage(comicImage.path + '/portrait_incredible.jpg' ),
         fit: BoxFit.contain,
-      ),
-    );
-  }
-}
-
-class Character extends StatelessWidget {
-
-  final Series comicCharacter;
-  final int index;
-  const Character({@required this.comicCharacter, @required this.index});
-
-  @override
-  Widget build(BuildContext context) {
-
-    final String characterUri = comicCharacter.resourceUri;
-
-    return GestureDetector(
-      onTap: (){
-        // print(comicCharacter.zzz);
-      },
-      child: Text(
-        comicCharacter.name
       ),
     );
   }
