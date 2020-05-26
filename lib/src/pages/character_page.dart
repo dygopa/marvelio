@@ -6,18 +6,17 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:marvelio/src/services/providers.dart';
 import 'package:marvelio/src/theme/theme.dart';
 
-import 'package:marvelio/src/models/comics_model.dart';
-import 'package:marvelio/src/models/characters_model.dart' as cm; 
+import 'package:marvelio/src/models/characters_model.dart'; 
+import 'package:marvelio/src/models/comics_model.dart' as cm;
 
-class ComicPage extends StatelessWidget {
+class CharacterPage extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
     
     final theme = Provider.of<ThemeChanger>(context).getTheme();     
-    final Result comic = ModalRoute.of(context).settings.arguments;
-    final List<Thumbnail> comicImages = comic.images;
-    final charactersProvider = Providers();
+    final Result personaje = ModalRoute.of(context).settings.arguments;
+    final provider = Providers();
 
 
     return Scaffold(
@@ -88,16 +87,16 @@ class ComicPage extends StatelessWidget {
                                 left: MediaQuery.of(context).size.width - 225.0,
                                 child: GestureDetector(
                                   onTap: (){
-                                    showCover(context, comic);
+                                    showCover(context, personaje);
                                   },
                                   child: Hero(
-                                    tag: comic.id,
+                                    tag: personaje.id,
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(20.0),
                                       child: Container(
                                         width: 135,
                                         child: Image(
-                                          image: NetworkImage(comic.thumbnail.path + '/portrait_incredible.jpg'),
+                                          image: NetworkImage(personaje.thumbnail.path + '/portrait_incredible.jpg'),
                                           fit: BoxFit.cover,
                                         ),
                                       ),
@@ -108,12 +107,12 @@ class ComicPage extends StatelessWidget {
                             ],
                           ),
                         ),
-                        //Título
+                        //Nombre
                         Container(
                           padding: EdgeInsets.symmetric(horizontal: 20.0),
                           margin: EdgeInsets.only(bottom: 25.0),
                           child: Text(
-                            comic.title,
+                            personaje.name,
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontFamily: 'Gilroy',
@@ -141,8 +140,8 @@ class ComicPage extends StatelessWidget {
                                 ),
                               ),
                               Container(
-                                child: Text( (comic.description != null)
-                                  ? comic.description
+                                child: Text( (personaje.description != null)
+                                  ? personaje.description
                                   : 'Sin descripción',
                                   style: TextStyle(
                                     fontFamily: 'Gilroy',
@@ -154,51 +153,7 @@ class ComicPage extends StatelessWidget {
                             ],
                           ),
                         ),
-                        //Imagenes
-                        Container(
-                          padding: EdgeInsets.symmetric(horizontal: 20.0),
-                          margin: EdgeInsets.only(bottom: 20.0),
-                          width: MediaQuery.of(context).size.width,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Container(
-                                margin: EdgeInsets.only(bottom: 20.0),
-                                child: Text(
-                                  'Imágenes',
-                                  style: TextStyle(
-                                    fontFamily: 'Gilroy',
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 21.0
-                                  ),
-                                ),
-                              ),
-                              Container(                      
-                                child: (comicImages.length > 1 )
-                                ? Container(
-                                  height: 261.0,
-                                  child: ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    physics: BouncingScrollPhysics(),
-                                    itemCount: comicImages.length,
-                                    itemBuilder: (BuildContext context, int index) {
-                                      return _Image(
-                                        comicImage: comicImages[index],
-                                        index: index
-                                      );
-                                    },
-                                  ),
-                                )
-                              : Container(
-                                  child: Text(
-                                    'Sin imágenes'
-                                  ),
-                                )
-                              ),
-                            ],
-                          ),
-                        ),
-                        //Personajes
+                        //Comics
                         Container(              
                           width: MediaQuery.of(context).size.width,
                           child: Column(
@@ -208,7 +163,7 @@ class ComicPage extends StatelessWidget {
                                 padding: EdgeInsets.symmetric(horizontal: 20.0),
                                 margin: EdgeInsets.only(bottom: 20.0),
                                 child: Text(
-                                  'Personajes',
+                                  'Cómics',
                                   style: TextStyle(
                                     fontFamily: 'Gilroy',
                                     fontWeight: FontWeight.w600,
@@ -217,11 +172,11 @@ class ComicPage extends StatelessWidget {
                                 ),
                               ),
                               FutureBuilder(
-                                future: charactersProvider.getComicCharacters(comic.id), 
+                                future: provider.getCharacterComics(personaje.id), 
                                 builder: (BuildContext context, AsyncSnapshot<List<cm.Result>> snapshot) {
                                   if(snapshot.connectionState == ConnectionState.done){
                                     if(snapshot.hasData){
-                                      return _crearPersonajesView(snapshot.data);
+                                      return _crearComicsView(snapshot.data);
                                     }else{
                                       return Text(
                                         snapshot.error.toString()
@@ -247,13 +202,13 @@ class ComicPage extends StatelessWidget {
     );
   }
 
-  void showCover(BuildContext context, comic){
+  void showCover(BuildContext context, personaje){
     Dialog dialogWithImage = Dialog(
       child: Container(
         // height: 200,
         width: 216,
         child: Image(
-          image: NetworkImage(comic.thumbnail.path + '/portrait_incredible.jpg'),
+          image: NetworkImage(personaje.thumbnail.path + '/portrait_incredible.jpg'),
           fit: BoxFit.cover,
         ),
       ),
@@ -264,10 +219,10 @@ class ComicPage extends StatelessWidget {
 
   }
 
-  Widget _crearPersonajesView(List<cm.Result> personajes) {
+  Widget _crearComicsView(List<cm.Result> comics) {
     return SizedBox(
       height: 350.0,
-      child: (personajes.length > 0 ) 
+      child: (comics.length > 0 ) 
       ? CarouselSlider.builder(
         options: CarouselOptions(
           scrollPhysics: BouncingScrollPhysics(),
@@ -278,22 +233,22 @@ class ComicPage extends StatelessWidget {
           viewportFraction: 0.6,
           initialPage: 0,
         ),
-        itemCount: personajes.length,
-        itemBuilder:(context, i) => _personajeTarjeta(personajes[i], context),
+        itemCount: comics.length,
+        itemBuilder:(context, i) => _comic(comics[i], context),
       )
       : Text(
-        'No hay personajes disponibles'
+        'No hay cómics disponibles'
       )
     ); 
   }
 
-  Widget _personajeTarjeta(cm.Result personaje, BuildContext context) {
+  Widget _comic(cm.Result comic, BuildContext context) {
     
     final theme = Provider.of<ThemeChanger>(context).getTheme();     
 
     return GestureDetector(
       onTap: (){
-        Navigator.pushNamed(context, 'character', arguments: personaje);
+        Navigator.pushNamed(context, 'comic', arguments: comic);
       },
       child: Stack(
         children: <Widget>[
@@ -326,7 +281,7 @@ class ComicPage extends StatelessWidget {
                 children: <Widget>[
                   Container(
                     child: Image(
-                      image: NetworkImage(personaje.thumbnail.path + '/portrait_incredible.jpg'),
+                      image: NetworkImage(comic.thumbnail.path + '/portrait_incredible.jpg'),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -343,7 +298,7 @@ class ComicPage extends StatelessWidget {
                           child: Padding(
                             padding: EdgeInsets.all(10.0),
                             child: Text(
-                              personaje.name,
+                              comic.title,
                               style: TextStyle(
                                 color: Colors.white,
                                 fontFamily: 'Gilroy',
@@ -360,28 +315,6 @@ class ComicPage extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _Image extends StatelessWidget {
-
-  final Thumbnail comicImage;
-  final int index;
-  const _Image({@required this.comicImage, @required this.index});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 20.0, right: 20.0),
-      // color: Colors.red,
-      // width: MediaQuery.of(context).size.width,
-      // width: 464.0,
-      // height: 261.0,
-      child: Image(
-        image: NetworkImage(comicImage.path + '/portrait_incredible.jpg' ),
-        fit: BoxFit.contain,
       ),
     );
   }

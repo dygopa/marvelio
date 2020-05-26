@@ -77,9 +77,7 @@ class _Character extends StatelessWidget {
 
     return GestureDetector(
       onTap: (){
-        
-        print(character.thumbnail.path);
-        print(character.resourceUri);
+        Navigator.pushNamed(context, 'character', arguments: character);
       },
       child: Stack(
         children: <Widget>[

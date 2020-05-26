@@ -1,4 +1,4 @@
-# marvelio
+# Marvelio
 
 Una aplicación desarrollada con Flutter utilizando la API de Marvel Comics.
 
