@@ -25,7 +25,7 @@ class ListaEvents extends StatelessWidget {
           height: 200.0,
           autoPlay: false,
           enlargeCenterPage: true,
-          viewportFraction: 0.8,
+          viewportFraction: 0.9,
           initialPage: 1,
         ),
         itemCount: this.events.length,

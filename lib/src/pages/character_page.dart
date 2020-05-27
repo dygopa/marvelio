@@ -58,22 +58,24 @@ class CharacterPage extends StatelessWidget {
                       children: <Widget>[
                         //Cover
                         Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: 240.0,
+                          // width: MediaQuery.of(context).size.width,
+                          height: 290.0,
                           child: Stack(
+                            alignment: Alignment.topCenter,
                             children: <Widget>[
                               Positioned(
-                                left: MediaQuery.of(context).size.width - 215.0,
-                                top: 10.0,
+                                // left: 50.0,
+                                // right: 50.0,                                
+                                // top: 10.0,
                                 child: Container(
-                                  width: 115.0,
-                                  height: 200.0,
+                                  width: 140.0,
+                                  height: 270.0,
                                   decoration: BoxDecoration(                    
                                   borderRadius: BorderRadius.circular(20.0),
                                     boxShadow: [
                                       BoxShadow(
                                         color: theme != ThemeData.dark()
-                                        ? Colors.black54.withOpacity(0.2)
+                                        ? Colors.black54.withOpacity(0.4)
                                         : Colors.black54.withOpacity(0.6),
                                         offset: Offset(0.0, 12.0),
                                         blurRadius: 20.0
@@ -84,7 +86,8 @@ class CharacterPage extends StatelessWidget {
                                 ),
                               ),
                               Positioned(
-                                left: MediaQuery.of(context).size.width - 225.0,
+                                // left: 50.0,
+                                // right: 50.0,
                                 child: GestureDetector(
                                   onTap: (){
                                     showCover(context, personaje);
@@ -94,7 +97,8 @@ class CharacterPage extends StatelessWidget {
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(20.0),
                                       child: Container(
-                                        width: 135,
+                                        width: 180.0,
+                                        height: 270.0,
                                         child: Image(
                                           image: NetworkImage(personaje.thumbnail.path + '/portrait_incredible.jpg'),
                                           fit: BoxFit.cover,
@@ -128,17 +132,17 @@ class CharacterPage extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Container(
-                                margin: EdgeInsets.only(bottom: 20.0),
-                                child: Text(
-                                  'Descripción',
-                                  style: TextStyle(
-                                    fontFamily: 'Gilroy',
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 21.0
-                                  ),
-                                ),
-                              ),
+                              // Container(
+                              //   margin: EdgeInsets.only(bottom: 20.0),
+                              //   child: Text(
+                              //     'Descripción',
+                              //     style: TextStyle(
+                              //       fontFamily: 'Gilroy',
+                              //       fontWeight: FontWeight.w600,
+                              //       fontSize: 21.0
+                              //     ),
+                              //   ),
+                              // ),
                               Container(
                                 child: Text( (personaje.description != null)
                                   ? personaje.description
@@ -221,17 +225,17 @@ class CharacterPage extends StatelessWidget {
 
   Widget _crearComicsView(List<cm.Result> comics) {
     return SizedBox(
-      height: 350.0,
+      height: 250.0,
       child: (comics.length > 0 ) 
       ? CarouselSlider.builder(
         options: CarouselOptions(
           scrollPhysics: BouncingScrollPhysics(),
           enableInfiniteScroll: false,
-          height: 290.0,
+          height: 350.0,
           autoPlay: false,
           enlargeCenterPage: true,
-          viewportFraction: 0.6,
-          initialPage: 0,
+          viewportFraction: 0.4,
+          initialPage: 1,
         ),
         itemCount: comics.length,
         itemBuilder:(context, i) => _comic(comics[i], context),
@@ -250,71 +254,64 @@ class CharacterPage extends StatelessWidget {
       onTap: (){
         Navigator.pushNamed(context, 'comic', arguments: comic);
       },
-      child: Stack(
-        children: <Widget>[
-          Positioned(
-            bottom: 0.0,
-            left: 20.0,
-            child: Container(
-              width: 160.0,
-              height: 110.0,
-              decoration: BoxDecoration(                    
-              borderRadius: BorderRadius.circular(20.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: theme != ThemeData.dark()
-                      ? Colors.black54.withOpacity(0.4)
-                      : Colors.black54.withOpacity(0.7),
-                    offset: Offset(0.0, 13.0),
-                    blurRadius: 20.0
+      child: Container(
+        // color: Colors.red,
+        // width: 200.0,
+        child: Stack(
+          alignment: Alignment.bottomCenter,
+          children: <Widget>[
+            Positioned(
+              top: 10.0,
+              child: Container(
+                width: 90.0,
+                height: 170.0,
+                decoration: BoxDecoration(                    
+                borderRadius: BorderRadius.circular(20.0),
+                  boxShadow: [
+                    BoxShadow(
+                      color: theme != ThemeData.dark()
+                        ? Colors.black54.withOpacity(0.4)
+                        : Colors.black54.withOpacity(0.7),
+                      offset: Offset(0.0, 13.0),
+                      blurRadius: 20.0
 
-                  )
-                ]
+                    )
+                  ]
+                ),
               ),
             ),
-          ),
-          Container(
-            margin: EdgeInsets.only(bottom: 00.0),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(25.0),
-              child: Stack(
+            Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Container(
-                    child: Image(
-                      image: NetworkImage(comic.thumbnail.path + '/portrait_incredible.jpg'),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 0.0,
-                    left: 0.0,
+                    width: 300.0,
+                    margin: EdgeInsets.only(bottom: 10.0),
                     child: ClipRRect(
-                      child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 05.0, sigmaY: 05.0),
-                        child: Container(
-                          color: Colors.black.withOpacity(0.2),
-                          width: 200.0,
-                          height: 70.0,
-                          child: Padding(
-                            padding: EdgeInsets.all(10.0),
-                            child: Text(
-                              comic.title,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: 'Gilroy',
-                                fontWeight: FontWeight.w600                         
-                              ),
-                            )
-                          ),
-                        ),
+                      borderRadius: BorderRadius.circular(20.0),
+                      child: Image(
+                        image: NetworkImage(comic.thumbnail.path + '/portrait_incredible.jpg'),
+                        fit: BoxFit.cover,
                       ),
                     ),
                   ),
+                  Container(
+                  child: Text(
+                      comic.title,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'Gilroy',
+                        fontWeight: FontWeight.w600                         
+                      ),
+                    )
+                  ),
                 ],
-              ),
+              )
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
