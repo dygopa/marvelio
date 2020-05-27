@@ -16,10 +16,10 @@ class CharactersService with ChangeNotifier{
   List<Result> characters = [];
 
   CharactersService(){
-    this.getCharactersHome();
+    this.getCharacters();
   }
 
-  getCharactersHome() async{
+  getCharacters() async{
 
     var firstChunk = utf8.encode(_TIMESTAMP);
     var secondChunk = utf8.encode(_PRIVATEKEY);
@@ -35,7 +35,7 @@ class CharactersService with ChangeNotifier{
 
     var digest = output.events.single;
 
-    final url = "${_URL_MARVEL}${_CATEGORY}ts=${_TIMESTAMP}&apikey=${_PUBLICKEY}&hash=${digest}&limit=5";
+    final url = "${_URL_MARVEL}${_CATEGORY}orderBy=name&ts=${_TIMESTAMP}&apikey=${_PUBLICKEY}&hash=${digest}&limit=5";
     final resp = await http.get(url);
 
     final charactersResponse = charactersResponseFromJson(resp.body);

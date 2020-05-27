@@ -222,7 +222,9 @@ class ComicPage extends StatelessWidget {
                                       );
                                     }
                                   }else{
-                                    return CircularProgressIndicator();
+                                    return Center(
+                                      child: CircularProgressIndicator()
+                                    );
                                   }
                                 },
                               ),
@@ -336,7 +338,6 @@ class ComicPage extends StatelessWidget {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        color: Colors.black,
                         fontFamily: 'Gilroy',
                         fontWeight: FontWeight.w600
                       ),

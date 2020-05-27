@@ -76,8 +76,7 @@ class _Event extends StatelessWidget {
 
     return GestureDetector(
       onTap: (){
-        print(event.thumbnail.path);
-        print(index);
+        Navigator.pushNamed(context, 'event', arguments: event);
       },
       child: Stack(
         children: <Widget>[

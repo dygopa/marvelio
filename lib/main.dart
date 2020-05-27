@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:marvelio/src/pages/character_page.dart';
+import 'package:marvelio/src/pages/event_page.dart';
 import 'package:provider/provider.dart';
 
 import 'package:marvelio/src/pages/home_page.dart';
@@ -58,6 +59,7 @@ class MaterialAppWithTheme extends StatelessWidget {
         'comic': (BuildContext context) => ComicPage(),
         'comics': (BuildContext context) => ComicsPage(),
         'character': (BuildContext context) => CharacterPage(),
+        'event': (BuildContext context) => EventPage(),
       }
     );
   }
