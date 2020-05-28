@@ -6,17 +6,18 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:marvelio/src/services/providers.dart';
 import 'package:marvelio/src/theme/theme.dart';
 
-import 'package:marvelio/src/models/series_model.dart';
+import 'package:marvelio/src/models/creators_model.dart'; 
 import 'package:marvelio/src/models/comics_model.dart' as c;
-import 'package:marvelio/src/models/characters_model.dart' as cm; 
+import 'package:marvelio/src/models/series_model.dart' as s;
+import 'package:marvelio/src/models/events_model.dart' as e;
 
-class SeriePage extends StatelessWidget {
+class CreatorPage extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
     
     final theme = Provider.of<ThemeChanger>(context).getTheme();     
-    final Result serie = ModalRoute.of(context).settings.arguments;
+    final Result creador = ModalRoute.of(context).settings.arguments;
     final provider = Providers();
 
 
@@ -59,22 +60,24 @@ class SeriePage extends StatelessWidget {
                       children: <Widget>[
                         //Cover
                         Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: 240.0,
+                          // width: MediaQuery.of(context).size.width,
+                          height: 290.0,
                           child: Stack(
+                            alignment: Alignment.topCenter,
                             children: <Widget>[
                               Positioned(
-                                left: MediaQuery.of(context).size.width - 215.0,
-                                top: 10.0,
+                                // left: 50.0,
+                                // right: 50.0,                                
+                                // top: 10.0,
                                 child: Container(
-                                  width: 115.0,
-                                  height: 200.0,
+                                  width: 140.0,
+                                  height: 270.0,
                                   decoration: BoxDecoration(                    
                                   borderRadius: BorderRadius.circular(20.0),
                                     boxShadow: [
                                       BoxShadow(
                                         color: theme != ThemeData.dark()
-                                        ? Colors.black54.withOpacity(0.2)
+                                        ? Colors.black54.withOpacity(0.4)
                                         : Colors.black54.withOpacity(0.6),
                                         offset: Offset(0.0, 12.0),
                                         blurRadius: 20.0
@@ -85,19 +88,21 @@ class SeriePage extends StatelessWidget {
                                 ),
                               ),
                               Positioned(
-                                left: MediaQuery.of(context).size.width - 225.0,
+                                // left: 50.0,
+                                // right: 50.0,
                                 child: GestureDetector(
                                   onTap: (){
-                                    showCover(context, serie);
+                                    showCover(context, creador);
                                   },
                                   child: Hero(
-                                    tag: serie.id,
+                                    tag: creador.id,
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(20.0),
                                       child: Container(
-                                        width: 135,
+                                        width: 180.0,
+                                        height: 270.0,
                                         child: Image(
-                                          image: NetworkImage(serie.thumbnail.path + '/portrait_incredible.jpg'),
+                                          image: NetworkImage(creador.thumbnail.path + '/portrait_incredible.jpg'),
                                           fit: BoxFit.cover,
                                         ),
                                       ),
@@ -108,12 +113,12 @@ class SeriePage extends StatelessWidget {
                             ],
                           ),
                         ),
-                        //Título
+                        //Nombre
                         Container(
                           padding: EdgeInsets.symmetric(horizontal: 20.0),
                           margin: EdgeInsets.only(bottom: 25.0),
                           child: Text(
-                            serie.title,
+                            creador.firstName +  ' ' + creador.lastName,
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontFamily: 'Gilroy',
@@ -121,30 +126,47 @@ class SeriePage extends StatelessWidget {
                             ),
                           )
                         ),
-                        //Descripción
-                        Container(
-                          padding: EdgeInsets.symmetric(horizontal: 20.0),
-                          margin: EdgeInsets.only(bottom: 20.0),
+                        //Series
+                        Container(              
                           width: MediaQuery.of(context).size.width,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Container(
-                                child: Text( (serie.description != null)
-                                  ? serie.description
-                                  : 'Sin descripción',
+                                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                                margin: EdgeInsets.only(bottom: 20.0),
+                                child: Text(
+                                  'Series',
                                   style: TextStyle(
                                     fontFamily: 'Gilroy',
-                                    fontWeight: FontWeight.w200,
-                                    fontSize: 14.0
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 21.0
                                   ),
                                 ),
-                              )
+                              ),
+                              FutureBuilder(
+                                future: provider.getCreatorSeries(creador.id), 
+                                builder: (BuildContext context, AsyncSnapshot<List<s.Result>> snapshot) {
+                                  if(snapshot.connectionState == ConnectionState.done){
+                                    if(snapshot.hasData){
+                                      return _crearSeriesView(snapshot.data);
+                                    }else{
+                                      return Text(
+                                        snapshot.error.toString()
+                                      );
+                                    }
+                                  }else{
+                                    return Center(
+                                      child: CircularProgressIndicator()
+                                    );
+                                  }
+                                },
+                              ),
                             ],
                           ),
                         ),
-                        //Comics
-                        Container(
+                        // Comics
+                        Container(              
                           width: MediaQuery.of(context).size.width,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -162,50 +184,11 @@ class SeriePage extends StatelessWidget {
                                 ),
                               ),
                               FutureBuilder(
-                                future: provider.getSerieComics(serie.id), 
+                                future: provider.getCreatorComics(creador.id), 
                                 builder: (BuildContext context, AsyncSnapshot<List<c.Result>> snapshot) {
                                   if(snapshot.connectionState == ConnectionState.done){
                                     if(snapshot.hasData){
                                       return _crearComicsView(snapshot.data);
-                                    }else{
-                                      return Text(
-                                        snapshot.error.toString()
-                                      );
-                                    }
-                                  }else{
-                                    return Center(
-                                      child: CircularProgressIndicator()
-                                    );
-                                  }
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                        //Personajes
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Container(
-                                padding: EdgeInsets.symmetric(horizontal: 20.0),
-                                margin: EdgeInsets.only(bottom: 20.0),
-                                child: Text(
-                                  'Personajes',
-                                  style: TextStyle(
-                                    fontFamily: 'Gilroy',
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 21.0
-                                  ),
-                                ),
-                              ),
-                              FutureBuilder(
-                                future: provider.getSerieCharacters(serie.id), 
-                                builder: (BuildContext context, AsyncSnapshot<List<cm.Result>> snapshot) {
-                                  if(snapshot.connectionState == ConnectionState.done){
-                                    if(snapshot.hasData){
-                                      return _crearPersonajesView(snapshot.data);
                                     }else{
                                       return Text(
                                         snapshot.error.toString()
@@ -233,13 +216,13 @@ class SeriePage extends StatelessWidget {
     );
   }
 
-  void showCover(BuildContext context, serie){
+  void showCover(BuildContext context, creador){
     Dialog dialogWithImage = Dialog(
       child: Container(
         // height: 200,
         width: 216,
         child: Image(
-          image: NetworkImage(serie.thumbnail.path + '/portrait_incredible.jpg'),
+          image: NetworkImage(creador.thumbnail.path + '/portrait_incredible.jpg'),
           fit: BoxFit.cover,
         ),
       ),
@@ -248,6 +231,98 @@ class SeriePage extends StatelessWidget {
       context: context, builder: (BuildContext context) => dialogWithImage
     );
 
+  }
+
+  Widget _crearSeriesView(List<s.Result> series) {
+    return SizedBox(
+      height: 250.0,
+      child: (series.length > 0 ) 
+      ? CarouselSlider.builder(
+        options: CarouselOptions(
+          scrollPhysics: BouncingScrollPhysics(),
+          enableInfiniteScroll: false,
+          height: 350.0,
+          autoPlay: false,
+          enlargeCenterPage: true,
+          viewportFraction: 0.4,
+          initialPage: 1,
+        ),
+        itemCount: series.length,
+        itemBuilder:(context, i) => _series(series[i], context),
+      )
+      : Text(
+        'No hay series disponibles'
+      )
+    ); 
+  }
+
+  Widget _series(s.Result serie, BuildContext context) {
+    
+    final theme = Provider.of<ThemeChanger>(context).getTheme();     
+
+    return GestureDetector(
+      onTap: (){
+        Navigator.pushNamed(context, 'serie', arguments: serie);
+      },
+      child: Container(
+        // color: Colors.red,
+        // width: 200.0,
+        child: Stack(
+          alignment: Alignment.bottomCenter,
+          children: <Widget>[
+            Positioned(
+              top: 10.0,
+              child: Container(
+                width: 90.0,
+                height: 170.0,
+                decoration: BoxDecoration(                    
+                borderRadius: BorderRadius.circular(20.0),
+                  boxShadow: [
+                    BoxShadow(
+                      color: theme != ThemeData.dark()
+                        ? Colors.black54.withOpacity(0.4)
+                        : Colors.black54.withOpacity(0.7),
+                      offset: Offset(0.0, 13.0),
+                      blurRadius: 20.0
+
+                    )
+                  ]
+                ),
+              ),
+            ),
+            Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    width: 300.0,
+                    margin: EdgeInsets.only(bottom: 10.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20.0),
+                      child: Image(
+                        image: NetworkImage(serie.thumbnail.path + '/portrait_incredible.jpg'),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  Container(
+                  child: Text(
+                      serie.title,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontFamily: 'Gilroy',
+                        fontWeight: FontWeight.w600                         
+                      ),
+                    )
+                  ),
+                ],
+              )
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _crearComicsView(List<c.Result> comics) {
@@ -330,98 +405,6 @@ class SeriePage extends StatelessWidget {
                       style: TextStyle(
                         fontFamily: 'Gilroy',
                         fontWeight: FontWeight.w600                         
-                      ),
-                    )
-                  ),
-                ],
-              )
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _crearPersonajesView(List<cm.Result> personajes) {
-    return SizedBox(
-      height: 250.0,
-      child: (personajes.length > 0 ) 
-      ? CarouselSlider.builder(
-        options: CarouselOptions(
-          scrollPhysics: BouncingScrollPhysics(),
-          enableInfiniteScroll: false,
-          height: 350.0,
-          autoPlay: false,
-          enlargeCenterPage: true,
-          viewportFraction: 0.4,
-          initialPage: 1,
-        ),
-        itemCount: personajes.length,
-        itemBuilder:(context, i) => _personajeTarjeta(personajes[i], context),
-      )
-      : Text(
-        'No hay personajes disponibles'
-      )
-    ); 
-  }
-
-  Widget _personajeTarjeta(cm.Result personaje, BuildContext context) {
-    
-    final theme = Provider.of<ThemeChanger>(context).getTheme();     
-
-    return GestureDetector(
-      onTap: (){
-        Navigator.pushNamed(context, 'character', arguments: personaje);
-      },
-      child: Container(
-        // color: Colors.red,
-        // width: 200.0,
-        child: Stack(
-          alignment: Alignment.bottomCenter,
-          children: <Widget>[
-            Positioned(
-              top: 10.0,
-              child: Container(
-                width: 90.0,
-                height: 170.0,
-                decoration: BoxDecoration(                    
-                borderRadius: BorderRadius.circular(20.0),
-                  boxShadow: [
-                    BoxShadow(
-                      color: theme != ThemeData.dark()
-                        ? Colors.black54.withOpacity(0.4)
-                        : Colors.black54.withOpacity(0.7),
-                      offset: Offset(0.0, 13.0),
-                      blurRadius: 20.0
-
-                    )
-                  ]
-                ),
-              ),
-            ),
-            Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Container(
-                    width: 300.0,
-                    margin: EdgeInsets.only(bottom: 10.0),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20.0),
-                      child: Image(
-                        image: NetworkImage(personaje.thumbnail.path + '/portrait_incredible.jpg'),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  Container(
-                  child: Text(
-                      personaje.name,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontFamily: 'Gilroy',
-                        fontWeight: FontWeight.w600
                       ),
                     )
                   ),

@@ -8,6 +8,7 @@ import 'package:marvelio/src/theme/theme.dart';
 
 import 'package:marvelio/src/models/comics_model.dart';
 import 'package:marvelio/src/models/characters_model.dart' as cm; 
+import 'package:marvelio/src/models/creators_model.dart' as cr; 
 
 class ComicPage extends StatelessWidget {
   
@@ -17,7 +18,7 @@ class ComicPage extends StatelessWidget {
     final theme = Provider.of<ThemeChanger>(context).getTheme();     
     final Result comic = ModalRoute.of(context).settings.arguments;
     final List<Thumbnail> comicImages = comic.images;
-    final charactersProvider = Providers();
+    final provider = Providers();
 
 
     return Scaffold(
@@ -193,7 +194,7 @@ class ComicPage extends StatelessWidget {
                           ),
                         ),
                         //Personajes
-                        Container(              
+                        Container(
                           width: MediaQuery.of(context).size.width,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -211,11 +212,50 @@ class ComicPage extends StatelessWidget {
                                 ),
                               ),
                               FutureBuilder(
-                                future: charactersProvider.getComicCharacters(comic.id), 
+                                future: provider.getComicCharacters(comic.id), 
                                 builder: (BuildContext context, AsyncSnapshot<List<cm.Result>> snapshot) {
                                   if(snapshot.connectionState == ConnectionState.done){
                                     if(snapshot.hasData){
                                       return _crearPersonajesView(snapshot.data);
+                                    }else{
+                                      return Text(
+                                        snapshot.error.toString()
+                                      );
+                                    }
+                                  }else{
+                                    return Center(
+                                      child: CircularProgressIndicator()
+                                    );
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                        //Creadores
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Container(
+                                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                                margin: EdgeInsets.only(bottom: 20.0),
+                                child: Text(
+                                  'Creadores',
+                                  style: TextStyle(
+                                    fontFamily: 'Gilroy',
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 21.0
+                                  ),
+                                ),
+                              ),
+                              FutureBuilder(
+                                future: provider.getComicCreators(comic.id), 
+                                builder: (BuildContext context, AsyncSnapshot<List<cr.Result>> snapshot) {
+                                  if(snapshot.connectionState == ConnectionState.done){
+                                    if(snapshot.hasData){
+                                      return _crearCreadoresView(snapshot.data);
                                     }else{
                                       return Text(
                                         snapshot.error.toString()
@@ -335,6 +375,98 @@ class ComicPage extends StatelessWidget {
                   Container(
                   child: Text(
                       personaje.name,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontFamily: 'Gilroy',
+                        fontWeight: FontWeight.w600
+                      ),
+                    )
+                  ),
+                ],
+              )
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _crearCreadoresView(List<cr.Result> creadores) {
+    return SizedBox(
+      height: 250.0,
+      child: (creadores.length > 0 ) 
+      ? CarouselSlider.builder(
+        options: CarouselOptions(
+          scrollPhysics: BouncingScrollPhysics(),
+          enableInfiniteScroll: false,
+          height: 350.0,
+          autoPlay: false,
+          enlargeCenterPage: true,
+          viewportFraction: 0.4,
+          initialPage: 1,
+        ),
+        itemCount: creadores.length,
+        itemBuilder:(context, i) => _creadoresTarjeta(creadores[i], context),
+      )
+      : Text(
+        'No hay creadores disponibles'
+      )
+    ); 
+  }
+
+  Widget _creadoresTarjeta(cr.Result creador, BuildContext context) {
+    
+    final theme = Provider.of<ThemeChanger>(context).getTheme();     
+
+    return GestureDetector(
+      onTap: (){
+        Navigator.pushNamed(context, 'creator', arguments: creador);
+      },
+      child: Container(
+        // color: Colors.red,
+        // width: 200.0,
+        child: Stack(
+          alignment: Alignment.bottomCenter,
+          children: <Widget>[
+            Positioned(
+              top: 10.0,
+              child: Container(
+                width: 90.0,
+                height: 170.0,
+                decoration: BoxDecoration(                    
+                borderRadius: BorderRadius.circular(20.0),
+                  boxShadow: [
+                    BoxShadow(
+                      color: theme != ThemeData.dark()
+                        ? Colors.black54.withOpacity(0.4)
+                        : Colors.black54.withOpacity(0.7),
+                      offset: Offset(0.0, 13.0),
+                      blurRadius: 20.0
+
+                    )
+                  ]
+                ),
+              ),
+            ),
+            Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    width: 300.0,
+                    margin: EdgeInsets.only(bottom: 10.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20.0),
+                      child: Image(
+                        image: NetworkImage(creador.thumbnail.path + '/portrait_incredible.jpg'),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  Container(
+                  child: Text(
+                      creador.firstName + ' ' + creador.lastName,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(

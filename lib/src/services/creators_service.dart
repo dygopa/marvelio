@@ -4,22 +4,22 @@ import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart';
 import 'package:http/http.dart' as http;
 
-import 'package:marvelio/src/models/series_model.dart';
+import 'package:marvelio/src/models/creators_model.dart';
 
 String _PRIVATEKEY = "2c835e79761bd3d12a141d4d10f951d989b38f99";
 String _PUBLICKEY = "c0364ab10a40a67baa026a001e7ebe4e";
 String _URL_MARVEL = "http://gateway.marvel.com/v1/public/";
-String _CATEGORY = "series?";
+String _CATEGORY = "creators?";
 String _TIMESTAMP = DateTime.now().millisecondsSinceEpoch.toString();
 
-class SeriesService with ChangeNotifier{
-  List<Result> series = [];
+class CreatorsService with ChangeNotifier{
+  List<Result> creators = [];
 
-  SeriesService(){
-    this.getSeries();
+  CreatorsService(){
+    this.getCreators();
   }
 
-  getSeries() async{
+  getCreators() async{
 
     var firstChunk = utf8.encode(_TIMESTAMP);
     var secondChunk = utf8.encode(_PRIVATEKEY);
@@ -35,14 +35,14 @@ class SeriesService with ChangeNotifier{
 
     var digest = output.events.single;
 
-    final url = "${_URL_MARVEL}${_CATEGORY}orderBy=-modified&ts=${_TIMESTAMP}&apikey=${_PUBLICKEY}&hash=${digest}";
+    final url = "${_URL_MARVEL}${_CATEGORY}ts=${_TIMESTAMP}&apikey=${_PUBLICKEY}&hash=${digest}&limit=5";
     final resp = await http.get(url);
 
-    final seriesResponse = seriesResponseFromJson(resp.body);
+    final charactersResponse = creatorsResponseFromJson(resp.body);
     
-    final resultado = seriesResponse.data.results;
+    final resultado = charactersResponse.data.results;
 
-    this.series.addAll(resultado);
+    this.creators.addAll(resultado);
 
     notifyListeners();
   }

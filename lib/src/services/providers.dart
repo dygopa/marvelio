@@ -7,6 +7,8 @@ import 'package:http/http.dart' as http;
 import 'package:marvelio/src/models/characters_model.dart';
 import 'package:marvelio/src/models/comics_model.dart' as c; 
 import 'package:marvelio/src/models/events_model.dart' as e; 
+import 'package:marvelio/src/models/series_model.dart' as s; 
+import 'package:marvelio/src/models/creators_model.dart' as cr; 
 
 class Providers{
 
@@ -40,6 +42,32 @@ class Providers{
     return resultado;
   }
 
+  Future<List<cr.Result>> getComicCreators(int comicId) async{
+
+    var firstChunk = utf8.encode(_timeStamp);
+    var secondChunk = utf8.encode(_privateKey);
+    var thirdChunk = utf8.encode(_publicKey);
+
+    var output = AccumulatorSink<Digest>();
+    var input = md5.startChunkedConversion(output);
+
+    input.add(firstChunk);
+    input.add(secondChunk);
+    input.add(thirdChunk);
+    input.close();
+
+    var digest = output.events.single;
+
+    final url = "https://gateway.marvel.com:443/v1/public/comics/${comicId}/creators?ts=${_timeStamp}&apikey=${_publicKey}&hash=${digest}";
+
+    final resp = await http.get(url);
+    final comicCreatorsResponse = cr.creatorsResponseFromJson(resp.body);
+    final resultado = comicCreatorsResponse.data.results;
+
+    // print(resultado);
+    return resultado;
+  }
+
   Future<List<Result>> getSerieCharacters(int serieId) async{
 
     var firstChunk = utf8.encode(_timeStamp);
@@ -65,6 +93,33 @@ class Providers{
     // print(resultado);
     return resultado;
   }
+
+  Future<List<c.Result>> getSerieComics(int serieId) async{
+
+    var firstChunk = utf8.encode(_timeStamp);
+    var secondChunk = utf8.encode(_privateKey);
+    var thirdChunk = utf8.encode(_publicKey);
+
+    var output = AccumulatorSink<Digest>();
+    var input = md5.startChunkedConversion(output);
+
+    input.add(firstChunk);
+    input.add(secondChunk);
+    input.add(thirdChunk);
+    input.close();
+
+    var digest = output.events.single;
+
+    final url = "https://gateway.marvel.com:443/v1/public/series/${serieId}/comics?ts=${_timeStamp}&apikey=${_publicKey}&hash=${digest}";
+
+    final resp = await http.get(url);
+    final serieComicsResponse = c.comicsResponseFromJson(resp.body);
+    final resultado = serieComicsResponse.data.results;
+
+    // print(resultado);
+    return resultado;
+  }
+
 
   Future<List<c.Result>> getCharacterComics(int characterId) async{
 
@@ -92,7 +147,7 @@ class Providers{
     return resultado;
   }
 
-  Future<List<c.Result>> getSerieComics(int serieId) async{
+  Future<List<s.Result>> getCharacterSeries(int characterId) async{
 
     var firstChunk = utf8.encode(_timeStamp);
     var secondChunk = utf8.encode(_privateKey);
@@ -108,11 +163,64 @@ class Providers{
 
     var digest = output.events.single;
 
-    final url = "https://gateway.marvel.com:443/v1/public/series/${serieId}/comics?ts=${_timeStamp}&apikey=${_publicKey}&hash=${digest}";
+    final url = "https://gateway.marvel.com:443/v1/public/characters/${characterId}/series?orderBy=-title&ts=${_timeStamp}&apikey=${_publicKey}&hash=${digest}";
 
     final resp = await http.get(url);
-    final serieComicsResponse = c.comicsResponseFromJson(resp.body);
-    final resultado = serieComicsResponse.data.results;
+    final characterSeriesResponse = s.seriesResponseFromJson(resp.body);
+    final resultado = characterSeriesResponse.data.results;
+
+    // print(resultado);
+    return resultado;
+  }
+
+
+  Future<List<c.Result>> getCreatorComics(int creatorId) async{
+
+    var firstChunk = utf8.encode(_timeStamp);
+    var secondChunk = utf8.encode(_privateKey);
+    var thirdChunk = utf8.encode(_publicKey);
+
+    var output = AccumulatorSink<Digest>();
+    var input = md5.startChunkedConversion(output);
+
+    input.add(firstChunk);
+    input.add(secondChunk);
+    input.add(thirdChunk);
+    input.close();
+
+    var digest = output.events.single;
+
+    final url = "https://gateway.marvel.com:443/v1/public/creators/${creatorId}/comics?ts=${_timeStamp}&apikey=${_publicKey}&hash=${digest}";
+
+    final resp = await http.get(url);
+    final creatorComicsResponse = c.comicsResponseFromJson(resp.body);
+    final resultado = creatorComicsResponse.data.results;
+
+    // print(resultado);
+    return resultado;
+  }
+  
+  Future<List<s.Result>> getCreatorSeries(int creatorId) async{
+
+    var firstChunk = utf8.encode(_timeStamp);
+    var secondChunk = utf8.encode(_privateKey);
+    var thirdChunk = utf8.encode(_publicKey);
+
+    var output = AccumulatorSink<Digest>();
+    var input = md5.startChunkedConversion(output);
+
+    input.add(firstChunk);
+    input.add(secondChunk);
+    input.add(thirdChunk);
+    input.close();
+
+    var digest = output.events.single;
+
+    final url = "https://gateway.marvel.com:443/v1/public/creators/${creatorId}/series?ts=${_timeStamp}&apikey=${_publicKey}&hash=${digest}";
+
+    final resp = await http.get(url);
+    final creatorSeriesResponse = s.seriesResponseFromJson(resp.body);
+    final resultado = creatorSeriesResponse.data.results;
 
     // print(resultado);
     return resultado;

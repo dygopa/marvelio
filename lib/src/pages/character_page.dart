@@ -8,6 +8,7 @@ import 'package:marvelio/src/theme/theme.dart';
 
 import 'package:marvelio/src/models/characters_model.dart'; 
 import 'package:marvelio/src/models/comics_model.dart' as cm;
+import 'package:marvelio/src/models/series_model.dart' as s;
 
 class CharacterPage extends StatelessWidget {
   
@@ -167,6 +168,45 @@ class CharacterPage extends StatelessWidget {
                                 padding: EdgeInsets.symmetric(horizontal: 20.0),
                                 margin: EdgeInsets.only(bottom: 20.0),
                                 child: Text(
+                                  'Series',
+                                  style: TextStyle(
+                                    fontFamily: 'Gilroy',
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 21.0
+                                  ),
+                                ),
+                              ),
+                              FutureBuilder(
+                                future: provider.getCharacterSeries(personaje.id), 
+                                builder: (BuildContext context, AsyncSnapshot<List<s.Result>> snapshot) {
+                                  if(snapshot.connectionState == ConnectionState.done){
+                                    if(snapshot.hasData){
+                                      return _crearSeriesView(snapshot.data);
+                                    }else{
+                                      return Text(
+                                        snapshot.error.toString()
+                                      );
+                                    }
+                                  }else{
+                                    return Center(
+                                      child: CircularProgressIndicator()
+                                    );
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                        // Series
+                        Container(              
+                          width: MediaQuery.of(context).size.width,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Container(
+                                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                                margin: EdgeInsets.only(bottom: 20.0),
+                                child: Text(
                                   'Cómics',
                                   style: TextStyle(
                                     fontFamily: 'Gilroy',
@@ -223,6 +263,98 @@ class CharacterPage extends StatelessWidget {
       context: context, builder: (BuildContext context) => dialogWithImage
     );
 
+  }
+
+  Widget _crearSeriesView(List<s.Result> series) {
+    return SizedBox(
+      height: 250.0,
+      child: (series.length > 0 ) 
+      ? CarouselSlider.builder(
+        options: CarouselOptions(
+          scrollPhysics: BouncingScrollPhysics(),
+          enableInfiniteScroll: false,
+          height: 350.0,
+          autoPlay: false,
+          enlargeCenterPage: true,
+          viewportFraction: 0.4,
+          initialPage: 1,
+        ),
+        itemCount: series.length,
+        itemBuilder:(context, i) => _series(series[i], context),
+      )
+      : Text(
+        'No hay series disponibles'
+      )
+    ); 
+  }
+
+  Widget _series(s.Result serie, BuildContext context) {
+    
+    final theme = Provider.of<ThemeChanger>(context).getTheme();     
+
+    return GestureDetector(
+      onTap: (){
+        Navigator.pushNamed(context, 'serie', arguments: serie);
+      },
+      child: Container(
+        // color: Colors.red,
+        // width: 200.0,
+        child: Stack(
+          alignment: Alignment.bottomCenter,
+          children: <Widget>[
+            Positioned(
+              top: 10.0,
+              child: Container(
+                width: 90.0,
+                height: 170.0,
+                decoration: BoxDecoration(                    
+                borderRadius: BorderRadius.circular(20.0),
+                  boxShadow: [
+                    BoxShadow(
+                      color: theme != ThemeData.dark()
+                        ? Colors.black54.withOpacity(0.4)
+                        : Colors.black54.withOpacity(0.7),
+                      offset: Offset(0.0, 13.0),
+                      blurRadius: 20.0
+
+                    )
+                  ]
+                ),
+              ),
+            ),
+            Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
+                    width: 300.0,
+                    margin: EdgeInsets.only(bottom: 10.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20.0),
+                      child: Image(
+                        image: NetworkImage(serie.thumbnail.path + '/portrait_incredible.jpg'),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  Container(
+                  child: Text(
+                      serie.title,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontFamily: 'Gilroy',
+                        fontWeight: FontWeight.w600                         
+                      ),
+                    )
+                  ),
+                ],
+              )
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _crearComicsView(List<cm.Result> comics) {

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:marvelio/src/pages/creator_page.dart';
+import 'package:marvelio/src/pages/series_page.dart';
+import 'package:marvelio/src/services/creators_service.dart';
 import 'package:provider/provider.dart';
 
 import 'package:marvelio/src/pages/home_page.dart';
@@ -35,6 +38,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create:(_)=>EventsService(),
         ),
+        ChangeNotifierProvider(
+          create:(_)=>CreatorsService(),
+        ),
         ChangeNotifierProvider<ThemeChanger>(
           create: (_) => ThemeChanger(ThemeData.light().copyWith(
             primaryColor: Colors.white
@@ -65,6 +71,8 @@ class MaterialAppWithTheme extends StatelessWidget {
         'character': (BuildContext context) => CharacterPage(),
         'comics': (BuildContext context) => ComicsPage(),
         'serie': (BuildContext context) => SeriePage(),
+        'series': (BuildContext context) => SeriesPage(),
+        'creator': (BuildContext context) => CreatorPage(),
         'event': (BuildContext context) => EventPage(),
       }
     );
