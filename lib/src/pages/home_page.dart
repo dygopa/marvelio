@@ -1,17 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:marvelio/src/utils/hashCode.dart';
 import 'package:provider/provider.dart';
 
 import 'package:marvelio/src/theme/theme.dart';
 
-import 'package:marvelio/src/models/comics_model.dart';
+import 'package:marvelio/src/models/series_model.dart';
 
 import 'package:marvelio/src/services/characters_service.dart';
-import 'package:marvelio/src/services/comics_service.dart';
+import 'package:marvelio/src/services/series_service.dart';
 import 'package:marvelio/src/services/events_service.dart';
 
 import 'package:marvelio/src/wigets/lista_characters.dart';
-import 'package:marvelio/src/wigets/lista_comics.dart';
+import 'package:marvelio/src/wigets/lista_series.dart';
 import 'package:marvelio/src/wigets/lista_events.dart';
 
 class HomePage extends StatelessWidget {
@@ -21,7 +22,7 @@ class HomePage extends StatelessWidget {
 
     ThemeChanger themeChanger = Provider.of<ThemeChanger>(context);
     
-    final comics = Provider.of<ComicsService>(context).comics;
+    final series = Provider.of<SeriesService>(context).series;
     final characters = Provider.of<CharactersService>(context).characters;
     final events = Provider.of<EventsService>(context).events;
     
@@ -88,16 +89,21 @@ class HomePage extends StatelessWidget {
                             )
                           ),
                         ),
-                        Container(
-                          padding: EdgeInsets.symmetric(horizontal: 15.0),
-                          margin: EdgeInsets.only(bottom: 0.0),
-                          child: Text(
-                            'ver más',
-                            style: TextStyle(
-                              fontFamily: 'Gilroy',
-                              fontWeight: FontWeight.w600,
-                              fontSize: 14
-                            )
+                        GestureDetector(
+                          onTap: (){
+                            mostrarMensaje();
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 15.0),
+                            margin: EdgeInsets.only(bottom: 0.0),
+                            child: Text(
+                              'ver más',
+                              style: TextStyle(
+                                fontFamily: 'Gilroy',
+                                fontWeight: FontWeight.w600,
+                                fontSize: 14
+                              )
+                            ),
                           ),
                         ),
                       ],
@@ -117,7 +123,7 @@ class HomePage extends StatelessWidget {
                   ],
                 ),
               ),
-              ComicsSectionHome(comics: comics),
+              SeriesSectionHome(series: series),
               SizedBox(
                 height: 20.0
               ),
@@ -176,10 +182,10 @@ class HomePage extends StatelessWidget {
   }
 }
 
-class ComicsSectionHome extends StatelessWidget {
-  const ComicsSectionHome({@required this.comics});
+class SeriesSectionHome extends StatelessWidget {
+  const SeriesSectionHome({@required this.series});
 
-  final List<Result> comics;
+  final List<Result> series;
 
   @override
   Widget build(BuildContext context) {
@@ -192,7 +198,7 @@ class ComicsSectionHome extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 15.0),
               margin: EdgeInsets.only(bottom: 25.0),
               child: Text(
-                'Cómics recientes',
+                'Series',
                 style: TextStyle(
                   fontFamily: 'Gilroy',
                   fontWeight: FontWeight.w200,
@@ -202,7 +208,7 @@ class ComicsSectionHome extends StatelessWidget {
             ),
             GestureDetector(
               onTap: (){
-                Navigator.pushNamed(context, 'comics');
+                Navigator.pushNamed(context, 'series');
               },
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 15.0),
@@ -221,8 +227,8 @@ class ComicsSectionHome extends StatelessWidget {
         ),
         Container(
           height: 760.0,
-          child: (comics.length > 0)
-          ? ListaComics(comics)
+          child: (series.length > 0)
+          ? ListaSeries(series)
           : Center(
             child: Container(
               width: 70.0,

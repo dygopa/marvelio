@@ -40,6 +40,32 @@ class Providers{
     return resultado;
   }
 
+  Future<List<Result>> getSerieCharacters(int serieId) async{
+
+    var firstChunk = utf8.encode(_timeStamp);
+    var secondChunk = utf8.encode(_privateKey);
+    var thirdChunk = utf8.encode(_publicKey);
+
+    var output = AccumulatorSink<Digest>();
+    var input = md5.startChunkedConversion(output);
+
+    input.add(firstChunk);
+    input.add(secondChunk);
+    input.add(thirdChunk);
+    input.close();
+
+    var digest = output.events.single;
+
+    final url = "https://gateway.marvel.com:443/v1/public/series/${serieId}/characters?ts=${_timeStamp}&apikey=${_publicKey}&hash=${digest}";
+
+    final resp = await http.get(url);
+    final serieCharactersResponse = charactersResponseFromJson(resp.body);
+    final resultado = serieCharactersResponse.data.results;
+
+    // print(resultado);
+    return resultado;
+  }
+
   Future<List<c.Result>> getCharacterComics(int characterId) async{
 
     var firstChunk = utf8.encode(_timeStamp);
@@ -61,6 +87,32 @@ class Providers{
     final resp = await http.get(url);
     final characterComicsResponse = c.comicsResponseFromJson(resp.body);
     final resultado = characterComicsResponse.data.results;
+
+    // print(resultado);
+    return resultado;
+  }
+
+  Future<List<c.Result>> getSerieComics(int serieId) async{
+
+    var firstChunk = utf8.encode(_timeStamp);
+    var secondChunk = utf8.encode(_privateKey);
+    var thirdChunk = utf8.encode(_publicKey);
+
+    var output = AccumulatorSink<Digest>();
+    var input = md5.startChunkedConversion(output);
+
+    input.add(firstChunk);
+    input.add(secondChunk);
+    input.add(thirdChunk);
+    input.close();
+
+    var digest = output.events.single;
+
+    final url = "https://gateway.marvel.com:443/v1/public/series/${serieId}/comics?ts=${_timeStamp}&apikey=${_publicKey}&hash=${digest}";
+
+    final resp = await http.get(url);
+    final serieComicsResponse = c.comicsResponseFromJson(resp.body);
+    final resultado = serieComicsResponse.data.results;
 
     // print(resultado);
     return resultado;

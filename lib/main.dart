@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:marvelio/src/pages/character_page.dart';
-import 'package:marvelio/src/pages/event_page.dart';
 import 'package:provider/provider.dart';
 
 import 'package:marvelio/src/pages/home_page.dart';
-import 'package:marvelio/src/pages/comics_page.dart';
 import 'package:marvelio/src/pages/comic_page.dart';
+import 'package:marvelio/src/pages/character_page.dart';
+import 'package:marvelio/src/pages/serie_page.dart';
+import 'package:marvelio/src/pages/comics_page.dart';
+import 'package:marvelio/src/pages/event_page.dart';
 
 import 'package:marvelio/src/services/characters_service.dart';
 import 'package:marvelio/src/services/comics_service.dart';
+import 'package:marvelio/src/services/series_service.dart';
 import 'package:marvelio/src/services/events_service.dart';
 
 import 'package:marvelio/src/theme/theme.dart';
@@ -23,6 +25,9 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create:(_)=>ComicsService(),
+        ),
+        ChangeNotifierProvider(
+          create:(_)=>SeriesService(),
         ),
         ChangeNotifierProvider(
           create:(_)=>CharactersService(),
@@ -57,8 +62,9 @@ class MaterialAppWithTheme extends StatelessWidget {
       routes: {
         'home': (BuildContext context) => HomePage(),
         'comic': (BuildContext context) => ComicPage(),
-        'comics': (BuildContext context) => ComicsPage(),
         'character': (BuildContext context) => CharacterPage(),
+        'comics': (BuildContext context) => ComicsPage(),
+        'serie': (BuildContext context) => SeriePage(),
         'event': (BuildContext context) => EventPage(),
       }
     );
