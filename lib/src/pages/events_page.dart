@@ -2,18 +2,18 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:marvelio/src/search/serie_search_delegate.dart';
+import 'package:marvelio/src/search/event_search_delegate.dart';
 import 'package:provider/provider.dart';
 
 import 'package:marvelio/src/theme/theme.dart';
 
-import 'package:marvelio/src/models/series_model.dart';
+import 'package:marvelio/src/models/events_model.dart';
 
-import 'package:marvelio/src/services/series_service.dart';
+import 'package:marvelio/src/services/events_service.dart';
 
-import 'package:marvelio/src/wigets/series.dart';
+import 'package:marvelio/src/wigets/events.dart';
 
-class SeriesPage extends StatelessWidget {
+class EventsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class SeriesPage extends StatelessWidget {
     ThemeChanger themeChanger = Provider.of<ThemeChanger>(context);
     final theme = Provider.of<ThemeChanger>(context).getTheme();  
     
-    final series = Provider.of<SeriesService>(context).series;
+    final events = Provider.of<EventsService>(context).events;
 
     return Scaffold(
       appBar: AppBar(
@@ -37,8 +37,8 @@ class SeriesPage extends StatelessWidget {
              onPressed:(){
               showSearch(
                 context: context, 
-                delegate: SerieSearch(series),
-                query: 'Amazing Spider-Man'
+                delegate: EventSearch(events),
+                query: 'Civil War'
               );
              },
            )
@@ -52,7 +52,7 @@ class SeriesPage extends StatelessWidget {
             children: <Widget>[
               Container(
                 padding: EdgeInsets.only(top: 0.0),
-                child: SeriesSection(series: series),
+                child: EventsSection(events: events),
               ),
             ],
           ),
@@ -62,17 +62,17 @@ class SeriesPage extends StatelessWidget {
   }
 }
 
-class SeriesSection extends StatelessWidget {
-  const SeriesSection({@required this.series});
+class EventsSection extends StatelessWidget {
+  const EventsSection({@required this.events});
 
-  final List<Result> series;
+  final List<Result> events;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       // height: MediaQuery.of(context).size.height,
-      child: (series.length > 0)
-      ? Series(series)
+      child: (events.length > 0)
+      ? Events(events)
       : Center(
         child: Container(
           width: 70.0,

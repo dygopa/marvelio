@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:marvelio/src/utils/hashCode.dart';
 import 'package:provider/provider.dart';
+import 'package:marvelio/src/utils/hashCode.dart';
 
 import 'package:marvelio/src/theme/theme.dart';
 
-import 'package:marvelio/src/models/series_model.dart';
+import 'package:marvelio/src/models/characters_model.dart' as c;
+import 'package:marvelio/src/models/series_model.dart' as s;
+import 'package:marvelio/src/models/events_model.dart' as e;
 
 import 'package:marvelio/src/services/characters_service.dart';
 import 'package:marvelio/src/services/series_service.dart';
@@ -71,109 +73,15 @@ class HomePage extends StatelessWidget {
                   ],
                 ),
               ),
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.symmetric(horizontal: 15.0),
-                          margin: EdgeInsets.only(bottom: 0.0),
-                          child: Text(
-                            'Personajes',
-                            style: TextStyle(
-                              fontFamily: 'Gilroy',
-                              fontWeight: FontWeight.w200,
-                              fontSize: 19
-                            )
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: (){
-                            mostrarMensaje();
-                          },
-                          child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 15.0),
-                            margin: EdgeInsets.only(bottom: 0.0),
-                            child: Text(
-                              'ver más',
-                              style: TextStyle(
-                                fontFamily: 'Gilroy',
-                                fontWeight: FontWeight.w600,
-                                fontSize: 14
-                              )
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Container(
-                      height: 365.0,
-                      child: (characters.length > 0)
-                      ? ListaCharacters(characters)
-                      : Center(
-                        child: Container(
-                          width: 70.0,
-                          height: 70.0,
-                          child: CircularProgressIndicator()
-                        ),
-                      )
-                    ),
-                  ],
-                ),
+              CharactersSectionHome(characters: characters),
+              SizedBox(
+                height: 20.0
               ),
               SeriesSectionHome(series: series),
               SizedBox(
                 height: 20.0
               ),
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.symmetric(horizontal: 15.0),
-                          margin: EdgeInsets.only(bottom: 0.0),
-                          child: Text(
-                            'Eventos',
-                            style: TextStyle(
-                              fontFamily: 'Gilroy',
-                              fontWeight: FontWeight.w200,
-                              fontSize: 19
-                            )
-                          ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.symmetric(horizontal: 15.0),
-                          margin: EdgeInsets.only(bottom: 0.0),
-                          child: Text(
-                            'ver más',
-                            style: TextStyle(
-                              fontFamily: 'Gilroy',
-                              fontWeight: FontWeight.w600,
-                              fontSize: 14
-                            )
-                          ),
-                        ),
-                      ],
-                    ),
-                    Container(
-                      height: 250.0,
-                      child: (events.length > 0)
-                      ? ListaEvents(events)
-                      : Center(
-                        child: Container(
-                          width: 70.0,
-                          height: 70.0,
-                          child: CircularProgressIndicator()
-                        ),
-                      )
-                    ),
-                  ],
-                ),
-              ),
+              EventsSectionHome(events: events),
             ],
           ),
         ),
@@ -182,10 +90,72 @@ class HomePage extends StatelessWidget {
   }
 }
 
+class CharactersSectionHome extends StatelessWidget {
+
+  final List<c.Result> characters;
+  const CharactersSectionHome({@required this.characters});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 15.0),
+                margin: EdgeInsets.only(bottom: 0.0),
+                child: Text(
+                  'Personajes',
+                  style: TextStyle(
+                    fontFamily: 'Gilroy',
+                    fontWeight: FontWeight.w200,
+                    fontSize: 19
+                  )
+                ),
+              ),
+              GestureDetector(
+                onTap: (){
+                  Navigator.pushNamed(context, 'characters');
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15.0),
+                  margin: EdgeInsets.only(bottom: 0.0),
+                  child: Text(
+                    'ver más',
+                    style: TextStyle(
+                      fontFamily: 'Gilroy',
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14
+                    )
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Container(
+            height: 365.0,
+            child: (characters.length > 0)
+            ? ListaCharacters(characters)
+            : Center(
+              child: Container(
+                width: 70.0,
+                height: 70.0,
+                child: CircularProgressIndicator()
+              ),
+            )
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class SeriesSectionHome extends StatelessWidget {
   const SeriesSectionHome({@required this.series});
 
-  final List<Result> series;
+  final List<s.Result> series;
 
   @override
   Widget build(BuildContext context) {
@@ -238,6 +208,68 @@ class SeriesSectionHome extends StatelessWidget {
           )
         )
       ],
+    );
+  }
+}
+
+class EventsSectionHome extends StatelessWidget {
+  const EventsSectionHome({@required this.events});
+
+  final List<e.Result> events;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 15.0),
+                margin: EdgeInsets.only(bottom: 0.0),
+                child: Text(
+                  'Eventos',
+                  style: TextStyle(
+                    fontFamily: 'Gilroy',
+                    fontWeight: FontWeight.w200,
+                    fontSize: 19
+                  )
+                ),
+              ),
+              GestureDetector(
+                onTap: (){
+                  Navigator.pushNamed(context, 'events');
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 15.0),
+                  margin: EdgeInsets.only(bottom: 20.0),
+                  child: Text(
+                    'ver más',
+                    style: TextStyle(
+                      fontFamily: 'Gilroy',
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14
+                    )
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Container(
+            height: 250.0,
+            child: (events.length > 0)
+            ? ListaEvents(events)
+            : Center(
+              child: Container(
+                width: 70.0,
+                height: 70.0,
+                child: CircularProgressIndicator()
+              ),
+            )
+          ),
+        ],
+      ),
     );
   }
 }

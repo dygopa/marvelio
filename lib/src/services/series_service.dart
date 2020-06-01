@@ -35,7 +35,7 @@ class SeriesService with ChangeNotifier{
 
     var digest = output.events.single;
 
-    final url = "${_URL_MARVEL}${_CATEGORY}orderBy=-modified&ts=${_TIMESTAMP}&apikey=${_PUBLICKEY}&hash=${digest}";
+    final url = "${_URL_MARVEL}${_CATEGORY}orderBy=-modified&ts=${_TIMESTAMP}&apikey=${_PUBLICKEY}&hash=${digest}&limit=100&offset=0";
     final resp = await http.get(url);
 
     final seriesResponse = seriesResponseFromJson(resp.body);

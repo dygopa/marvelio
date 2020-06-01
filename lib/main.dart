@@ -7,9 +7,11 @@ import 'package:provider/provider.dart';
 import 'package:marvelio/src/pages/home_page.dart';
 import 'package:marvelio/src/pages/comic_page.dart';
 import 'package:marvelio/src/pages/character_page.dart';
+import 'package:marvelio/src/pages/characters_page.dart';
 import 'package:marvelio/src/pages/serie_page.dart';
 import 'package:marvelio/src/pages/comics_page.dart';
 import 'package:marvelio/src/pages/event_page.dart';
+import 'package:marvelio/src/pages/events_page.dart';
 
 import 'package:marvelio/src/services/characters_service.dart';
 import 'package:marvelio/src/services/comics_service.dart';
@@ -69,11 +71,13 @@ class MaterialAppWithTheme extends StatelessWidget {
         'home': (BuildContext context) => HomePage(),
         'comic': (BuildContext context) => ComicPage(),
         'character': (BuildContext context) => CharacterPage(),
+        'characters': (BuildContext context) => CharactersPage(),
         'comics': (BuildContext context) => ComicsPage(),
         'serie': (BuildContext context) => SeriePage(),
         'series': (BuildContext context) => SeriesPage(),
         'creator': (BuildContext context) => CreatorPage(),
         'event': (BuildContext context) => EventPage(),
+        'events': (BuildContext context) => EventsPage(),
       }
     );
   }

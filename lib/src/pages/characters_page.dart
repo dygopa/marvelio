@@ -2,18 +2,18 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:marvelio/src/search/serie_search_delegate.dart';
+import 'package:marvelio/src/search/character_search_delegate.dart';
 import 'package:provider/provider.dart';
 
 import 'package:marvelio/src/theme/theme.dart';
 
-import 'package:marvelio/src/models/series_model.dart';
+import 'package:marvelio/src/models/characters_model.dart';
 
-import 'package:marvelio/src/services/series_service.dart';
+import 'package:marvelio/src/services/characters_service.dart';
 
-import 'package:marvelio/src/wigets/series.dart';
+import 'package:marvelio/src/wigets/characters.dart';
 
-class SeriesPage extends StatelessWidget {
+class CharactersPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class SeriesPage extends StatelessWidget {
     ThemeChanger themeChanger = Provider.of<ThemeChanger>(context);
     final theme = Provider.of<ThemeChanger>(context).getTheme();  
     
-    final series = Provider.of<SeriesService>(context).series;
+    final characters = Provider.of<CharactersService>(context).characters;
 
     return Scaffold(
       appBar: AppBar(
@@ -37,8 +37,8 @@ class SeriesPage extends StatelessWidget {
              onPressed:(){
               showSearch(
                 context: context, 
-                delegate: SerieSearch(series),
-                query: 'Amazing Spider-Man'
+                delegate: CharacterSearch(characters),
+                query: 'Capitan America'
               );
              },
            )
@@ -52,7 +52,7 @@ class SeriesPage extends StatelessWidget {
             children: <Widget>[
               Container(
                 padding: EdgeInsets.only(top: 0.0),
-                child: SeriesSection(series: series),
+                child: CharactersSection(characters: characters),
               ),
             ],
           ),
@@ -62,17 +62,17 @@ class SeriesPage extends StatelessWidget {
   }
 }
 
-class SeriesSection extends StatelessWidget {
-  const SeriesSection({@required this.series});
+class CharactersSection extends StatelessWidget {
+  const CharactersSection({@required this.characters});
 
-  final List<Result> series;
+  final List<Result> characters;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       // height: MediaQuery.of(context).size.height,
-      child: (series.length > 0)
-      ? Series(series)
+      child: (characters.length > 0)
+      ? Characters(characters)
       : Center(
         child: Container(
           width: 70.0,

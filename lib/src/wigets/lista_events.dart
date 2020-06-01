@@ -15,9 +15,6 @@ class ListaEvents extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Container(
-      // color: Colors.red,
-      // height: 400.0,
-      // width: MediaQuery.of(context).size.width,
       child: CarouselSlider.builder(
         options: CarouselOptions(
           scrollPhysics: BouncingScrollPhysics(),
@@ -51,13 +48,8 @@ class _Events extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // return (character.thumbnail.path != 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available' || character.thumbnail.path == null )
-    // ? Container(child: _Character(character: character, index: index))
-    // : Container(
-    //   color: Colors.red
-    // );
-    return Container(child: _Event(event: event, index: index));
-
+    return Container(
+      child: _Event(event: event, index: index));
   }
 }
 

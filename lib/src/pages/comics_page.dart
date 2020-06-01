@@ -23,22 +23,28 @@ class ComicsPage extends StatelessWidget {
     final comics = Provider.of<ComicsService>(context).comics;
 
     return Scaffold(
-      appBar: AppBar(
-        iconTheme: IconThemeData(
-          color: theme != ThemeData.dark()
-            ? Colors.black
-            : Colors.white,
-        ),
-        elevation: 0.0,
-        actions: <Widget>[
-          // IconButton(
-          //    icon: Icon(Icons.arrow_back_ios),
-          //    onPressed:(){
-          //      Navigator.pop(context);
-          //    },
-          //  )
-        ],
-      ),
+      // appBar: AppBar(
+      //   // iconTheme: IconThemeData(
+      //   //   color: theme != ThemeData.dark()
+      //   //     ? Colors.black
+      //   //     : Colors.white,
+      //   // ),
+      //   elevation: 0.0,
+      //   actions: <Widget>[
+      //     IconButton(
+      //        icon: Icon(Icons.arrow_back),
+      //        onPressed:(){
+      //         //  Navigator.pop(context);
+      //        },
+      //      ),
+      //     IconButton(
+      //        icon: Icon(Icons.search),
+      //        onPressed:(){
+      //         //  Navigator.pop(context);
+      //        },
+      //      )
+      //   ],
+      // ),
       // backgroundColor: Color(0XFFF2F2F2),
       body: SafeArea(
         child: Padding(
