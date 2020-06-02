@@ -40,13 +40,7 @@ class CreatorPage extends StatelessWidget {
                               Navigator.pop(context);
                             },
                           )
-                        ),
-                        Container(
-                          child: IconButton(
-                            icon: Icon(Icons.favorite_border),
-                            onPressed:(){},
-                          )
-                        ),
+                        )
                       ],
                     ),
                   ),
@@ -60,15 +54,11 @@ class CreatorPage extends StatelessWidget {
                       children: <Widget>[
                         //Cover
                         Container(
-                          // width: MediaQuery.of(context).size.width,
                           height: 290.0,
                           child: Stack(
                             alignment: Alignment.topCenter,
                             children: <Widget>[
                               Positioned(
-                                // left: 50.0,
-                                // right: 50.0,                                
-                                // top: 10.0,
                                 child: Container(
                                   width: 140.0,
                                   height: 270.0,
@@ -81,15 +71,12 @@ class CreatorPage extends StatelessWidget {
                                         : Colors.black54.withOpacity(0.6),
                                         offset: Offset(0.0, 12.0),
                                         blurRadius: 20.0
-
                                       )
                                     ]
                                   ),
                                 ),
                               ),
                               Positioned(
-                                // left: 50.0,
-                                // right: 50.0,
                                 child: GestureDetector(
                                   onTap: (){
                                     showCover(context, creador);
@@ -175,7 +162,7 @@ class CreatorPage extends StatelessWidget {
                                 padding: EdgeInsets.symmetric(horizontal: 20.0),
                                 margin: EdgeInsets.only(bottom: 20.0),
                                 child: Text(
-                                  'Cómics',
+                                  'Comics',
                                   style: TextStyle(
                                     fontFamily: 'Gilroy',
                                     fontWeight: FontWeight.w600,
@@ -202,6 +189,21 @@ class CreatorPage extends StatelessWidget {
                                 },
                               ),
                             ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20.0
+                        ),
+                        Container(
+                          alignment: Alignment.center,
+                          padding: EdgeInsets.only(left: 15.0, right: 15.0, bottom: 15.0),
+                          child: Text(
+                            'Data provided by Marvel. © 2014 Marvel',
+                            style: TextStyle(
+                              fontFamily: 'Gilroy',
+                              fontWeight: FontWeight.w200,
+                              fontSize: 12
+                            )
                           ),
                         )
                       ],
@@ -251,7 +253,12 @@ class CreatorPage extends StatelessWidget {
         itemBuilder:(context, i) => _series(series[i], context),
       )
       : Text(
-        'No hay series disponibles'
+        'Whitout series',
+        style: TextStyle(
+          fontFamily: 'Gilroy',
+          fontWeight: FontWeight.w200,
+          fontSize: 14.0
+        )
       )
     ); 
   }
@@ -265,8 +272,6 @@ class CreatorPage extends StatelessWidget {
         Navigator.pushNamed(context, 'serie', arguments: serie);
       },
       child: Container(
-        // color: Colors.red,
-        // width: 200.0,
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: <Widget>[
@@ -284,7 +289,6 @@ class CreatorPage extends StatelessWidget {
                         : Colors.black54.withOpacity(0.7),
                       offset: Offset(0.0, 13.0),
                       blurRadius: 20.0
-
                     )
                   ]
                 ),
@@ -343,7 +347,12 @@ class CreatorPage extends StatelessWidget {
         itemBuilder:(context, i) => _comic(comics[i], context),
       )
       : Text(
-        'No hay cómics disponibles'
+        'Whitout comics',          
+        style: TextStyle(
+          fontFamily: 'Gilroy',
+          fontWeight: FontWeight.w200,
+          fontSize: 14.0
+        )
       )
     ); 
   }
@@ -357,8 +366,6 @@ class CreatorPage extends StatelessWidget {
         Navigator.pushNamed(context, 'comic', arguments: comic);
       },
       child: Container(
-        // color: Colors.red,
-        // width: 200.0,
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: <Widget>[
@@ -376,7 +383,6 @@ class CreatorPage extends StatelessWidget {
                         : Colors.black54.withOpacity(0.7),
                       offset: Offset(0.0, 13.0),
                       blurRadius: 20.0
-
                     )
                   ]
                 ),

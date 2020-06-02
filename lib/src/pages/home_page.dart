@@ -47,7 +47,7 @@ class HomePage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text(
-                          'Descubre todo sobre',
+                          'Discover all about',
                           style: TextStyle(
                             fontFamily: 'Gilroy',
                             fontWeight: FontWeight.w200,
@@ -82,6 +82,21 @@ class HomePage extends StatelessWidget {
                 height: 20.0
               ),
               EventsSectionHome(events: events),
+              SizedBox(
+                height: 20.0
+              ),
+              Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.only(left: 15.0, right: 15.0, bottom: 15.0),
+                child: Text(
+                  'Data provided by Marvel. © 2014 Marvel',
+                  style: TextStyle(
+                    fontFamily: 'Gilroy',
+                    fontWeight: FontWeight.w200,
+                    fontSize: 12
+                  )
+                ),
+              )
             ],
           ),
         ),
@@ -107,7 +122,7 @@ class CharactersSectionHome extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 15.0),
                 margin: EdgeInsets.only(bottom: 0.0),
                 child: Text(
-                  'Personajes',
+                  'Characters',
                   style: TextStyle(
                     fontFamily: 'Gilroy',
                     fontWeight: FontWeight.w200,
@@ -123,7 +138,7 @@ class CharactersSectionHome extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 15.0),
                   margin: EdgeInsets.only(bottom: 0.0),
                   child: Text(
-                    'ver más',
+                    'see more',
                     style: TextStyle(
                       fontFamily: 'Gilroy',
                       fontWeight: FontWeight.w600,
@@ -184,7 +199,7 @@ class SeriesSectionHome extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 15.0),
                 margin: EdgeInsets.only(bottom: 20.0),
                 child: Text(
-                  'ver más',
+                  'see more',
                   style: TextStyle(
                     fontFamily: 'Gilroy',
                     fontWeight: FontWeight.w600,
@@ -229,7 +244,7 @@ class EventsSectionHome extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 15.0),
                 margin: EdgeInsets.only(bottom: 0.0),
                 child: Text(
-                  'Eventos',
+                  'Events',
                   style: TextStyle(
                     fontFamily: 'Gilroy',
                     fontWeight: FontWeight.w200,
@@ -245,7 +260,7 @@ class EventsSectionHome extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 15.0),
                   margin: EdgeInsets.only(bottom: 20.0),
                   child: Text(
-                    'ver más',
+                    'see more',
                     style: TextStyle(
                       fontFamily: 'Gilroy',
                       fontWeight: FontWeight.w600,
@@ -257,7 +272,7 @@ class EventsSectionHome extends StatelessWidget {
             ],
           ),
           Container(
-            height: 250.0,
+            height: 280.0,
             child: (events.length > 0)
             ? ListaEvents(events)
             : Center(
@@ -291,7 +306,7 @@ void _bottomSheet(BuildContext context, ThemeChanger themeChanger) {
             ListTile(
               leading: Icon(Icons.brightness_2),
               title: Text(
-                'Modo oscuro',
+                'Dark mode',
                 style: TextStyle(
                   fontFamily: 'Gilroy'
                 )
@@ -303,7 +318,7 @@ void _bottomSheet(BuildContext context, ThemeChanger themeChanger) {
             ListTile(
               leading: Icon(Icons.brightness_1),
               title: Text(
-                'Modo claro',
+                'Light mode',
                 style: TextStyle(
                   fontFamily: 'Gilroy'
                 )

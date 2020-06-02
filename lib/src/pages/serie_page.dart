@@ -39,13 +39,7 @@ class SeriePage extends StatelessWidget {
                               Navigator.pop(context);
                             },
                           )
-                        ),
-                        Container(
-                          child: IconButton(
-                            icon: Icon(Icons.favorite_border),
-                            onPressed:(){},
-                          )
-                        ),
+                        )
                       ],
                     ),
                   ),
@@ -132,7 +126,7 @@ class SeriePage extends StatelessWidget {
                               Container(
                                 child: Text( (serie.description != null)
                                   ? serie.description
-                                  : 'Sin descripción',
+                                  : 'Whitout description',
                                   style: TextStyle(
                                     fontFamily: 'Gilroy',
                                     fontWeight: FontWeight.w200,
@@ -153,7 +147,7 @@ class SeriePage extends StatelessWidget {
                                 padding: EdgeInsets.symmetric(horizontal: 20.0),
                                 margin: EdgeInsets.only(bottom: 20.0),
                                 child: Text(
-                                  'Cómics',
+                                  'Comics',
                                   style: TextStyle(
                                     fontFamily: 'Gilroy',
                                     fontWeight: FontWeight.w600,
@@ -192,7 +186,7 @@ class SeriePage extends StatelessWidget {
                                 padding: EdgeInsets.symmetric(horizontal: 20.0),
                                 margin: EdgeInsets.only(bottom: 20.0),
                                 child: Text(
-                                  'Personajes',
+                                  'Characters',
                                   style: TextStyle(
                                     fontFamily: 'Gilroy',
                                     fontWeight: FontWeight.w600,
@@ -219,6 +213,21 @@ class SeriePage extends StatelessWidget {
                                 },
                               ),
                             ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20.0
+                        ),
+                        Container(
+                          alignment: Alignment.center,
+                          padding: EdgeInsets.only(left: 15.0, right: 15.0, bottom: 15.0),
+                          child: Text(
+                            'Data provided by Marvel. © 2014 Marvel',
+                            style: TextStyle(
+                              fontFamily: 'Gilroy',
+                              fontWeight: FontWeight.w200,
+                              fontSize: 12
+                            )
                           ),
                         )
                       ],
@@ -268,7 +277,12 @@ class SeriePage extends StatelessWidget {
         itemBuilder:(context, i) => _comic(comics[i], context),
       )
       : Text(
-        'No hay cómics disponibles'
+        'Whitout comics',
+        style: TextStyle(
+          fontFamily: 'Gilroy',
+          fontWeight: FontWeight.w200,
+          fontSize: 14.0
+        ),
       )
     ); 
   }
@@ -282,8 +296,6 @@ class SeriePage extends StatelessWidget {
         Navigator.pushNamed(context, 'comic', arguments: comic);
       },
       child: Container(
-        // color: Colors.red,
-        // width: 200.0,
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: <Widget>[
@@ -301,7 +313,6 @@ class SeriePage extends StatelessWidget {
                         : Colors.black54.withOpacity(0.7),
                       offset: Offset(0.0, 13.0),
                       blurRadius: 20.0
-
                     )
                   ]
                 ),
@@ -360,7 +371,12 @@ class SeriePage extends StatelessWidget {
         itemBuilder:(context, i) => _personajeTarjeta(personajes[i], context),
       )
       : Text(
-        'No hay personajes disponibles'
+        'Whitout characters',
+        style: TextStyle(
+          fontFamily: 'Gilroy',
+          fontWeight: FontWeight.w200,
+          fontSize: 14.0
+        ),
       )
     ); 
   }
@@ -374,8 +390,6 @@ class SeriePage extends StatelessWidget {
         Navigator.pushNamed(context, 'character', arguments: personaje);
       },
       child: Container(
-        // color: Colors.red,
-        // width: 200.0,
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: <Widget>[
@@ -393,7 +407,6 @@ class SeriePage extends StatelessWidget {
                         : Colors.black54.withOpacity(0.7),
                       offset: Offset(0.0, 13.0),
                       blurRadius: 20.0
-
                     )
                   ]
                 ),

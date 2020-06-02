@@ -40,13 +40,7 @@ class ComicPage extends StatelessWidget {
                               Navigator.pop(context);
                             },
                           )
-                        ),
-                        Container(
-                          child: IconButton(
-                            icon: Icon(Icons.favorite_border),
-                            onPressed:(){},
-                          )
-                        ),
+                        )
                       ],
                     ),
                   ),
@@ -133,7 +127,7 @@ class ComicPage extends StatelessWidget {
                               Container(
                                 child: Text( (comic.description != null)
                                   ? comic.description
-                                  : 'Sin descripción',
+                                  : 'Without description',
                                   style: TextStyle(
                                     fontFamily: 'Gilroy',
                                     fontWeight: FontWeight.w200,
@@ -155,7 +149,7 @@ class ComicPage extends StatelessWidget {
                               Container(
                                 margin: EdgeInsets.only(bottom: 20.0),
                                 child: Text(
-                                  'Imágenes',
+                                  'Images',
                                   style: TextStyle(
                                     fontFamily: 'Gilroy',
                                     fontWeight: FontWeight.w600,
@@ -185,7 +179,12 @@ class ComicPage extends StatelessWidget {
                                   )
                                 : Container(
                                     child: Text(
-                                      'Sin imágenes'
+                                      'Without images',                                  
+                                      style: TextStyle(
+                                        fontFamily: 'Gilroy',
+                                        fontWeight: FontWeight.w200,
+                                        fontSize: 14.0
+                                      ),
                                     ),
                                   )
                                 ),
@@ -203,7 +202,7 @@ class ComicPage extends StatelessWidget {
                                 padding: EdgeInsets.symmetric(horizontal: 20.0),
                                 margin: EdgeInsets.only(bottom: 20.0),
                                 child: Text(
-                                  'Personajes',
+                                  'Characters',
                                   style: TextStyle(
                                     fontFamily: 'Gilroy',
                                     fontWeight: FontWeight.w600,
@@ -242,7 +241,7 @@ class ComicPage extends StatelessWidget {
                                 padding: EdgeInsets.symmetric(horizontal: 20.0),
                                 margin: EdgeInsets.only(bottom: 20.0),
                                 child: Text(
-                                  'Creadores',
+                                  'Creators',
                                   style: TextStyle(
                                     fontFamily: 'Gilroy',
                                     fontWeight: FontWeight.w600,
@@ -269,6 +268,21 @@ class ComicPage extends StatelessWidget {
                                 },
                               ),
                             ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20.0
+                        ),
+                        Container(
+                          alignment: Alignment.center,
+                          padding: EdgeInsets.only(left: 15.0, right: 15.0, bottom: 15.0),
+                          child: Text(
+                            'Data provided by Marvel. © 2014 Marvel',
+                            style: TextStyle(
+                              fontFamily: 'Gilroy',
+                              fontWeight: FontWeight.w200,
+                              fontSize: 12
+                            )
                           ),
                         )
                       ],
@@ -301,10 +315,10 @@ class ComicPage extends StatelessWidget {
   }
 
   Widget _crearPersonajesView(List<cm.Result> personajes) {
-    return SizedBox(
+    return  (personajes.length > 0 ) 
+    ? SizedBox(
       height: 250.0,
-      child: (personajes.length > 0 ) 
-      ? CarouselSlider.builder(
+      child: CarouselSlider.builder(
         options: CarouselOptions(
           scrollPhysics: BouncingScrollPhysics(),
           enableInfiniteScroll: false,
@@ -317,10 +331,19 @@ class ComicPage extends StatelessWidget {
         itemCount: personajes.length,
         itemBuilder:(context, i) => _personajeTarjeta(personajes[i], context),
       )
-      : Text(
-        'No hay personajes disponibles'
-      )
-    ); 
+    )
+    : Container(
+      padding: EdgeInsets.symmetric(horizontal: 20.0),
+      margin: EdgeInsets.only(bottom: 20.0),
+      child: Text(
+        'Whitout characters',
+        style: TextStyle(
+          fontFamily: 'Gilroy',
+          fontWeight: FontWeight.w200,
+          fontSize: 14.0
+        ),
+      ),
+    );
   }
 
   Widget _personajeTarjeta(cm.Result personaje, BuildContext context) {
@@ -410,7 +433,12 @@ class ComicPage extends StatelessWidget {
         itemBuilder:(context, i) => _creadoresTarjeta(creadores[i], context),
       )
       : Text(
-        'No hay creadores disponibles'
+        'Whitour creators',
+        style: TextStyle(
+          fontFamily: 'Gilroy',
+          fontWeight: FontWeight.w200,
+          fontSize: 14.0
+        ),
       )
     ); 
   }
@@ -424,8 +452,6 @@ class ComicPage extends StatelessWidget {
         Navigator.pushNamed(context, 'creator', arguments: creador);
       },
       child: Container(
-        // color: Colors.red,
-        // width: 200.0,
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: <Widget>[
@@ -443,7 +469,6 @@ class ComicPage extends StatelessWidget {
                         : Colors.black54.withOpacity(0.7),
                       offset: Offset(0.0, 13.0),
                       blurRadius: 20.0
-
                     )
                   ]
                 ),
@@ -511,7 +536,12 @@ class ComicPage extends StatelessWidget {
         )
       : Container(
           child: Text(
-            'Sin imágenes'
+            'Whitout images',
+            style: TextStyle(
+              fontFamily: 'Gilroy',
+              fontWeight: FontWeight.w200,
+              fontSize: 14.0
+            ),
           ),
         )
       ),

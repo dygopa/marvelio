@@ -115,7 +115,7 @@ class _Event extends StatelessWidget {
                         filter: ImageFilter.blur(sigmaX: 05.0, sigmaY: 05.0),
                         child: Container(
                           color: Colors.black.withOpacity(0.2),
-                          width: 260.0,
+                          width: 300.0,
                           height: 50.0,
                           child: Padding(
                             padding: EdgeInsets.all(15.0),

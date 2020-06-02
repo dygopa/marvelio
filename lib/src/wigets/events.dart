@@ -134,20 +134,10 @@ class _Event extends StatelessWidget {
                                   fontWeight: FontWeight.w600                              
                                 )
                               ),
-                              Text(
-                                'Spider-man',
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                  fontFamily: 'Gilroy',
-                                  fontWeight: FontWeight.w200
-                                )
-                              ),
                             ],
                           ),
                           Text(
-                            'Spider-man',
+                            event.description,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.left,

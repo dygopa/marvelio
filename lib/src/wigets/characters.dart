@@ -98,7 +98,6 @@ class _Character extends StatelessWidget {
                             : Colors.black54.withOpacity(0.6),
                             offset: Offset(0.0, 12.0),
                             blurRadius: 20.0
-
                           )
                         ]
                       ),
@@ -131,23 +130,13 @@ class _Character extends StatelessWidget {
                                 textAlign: TextAlign.left,
                                 style: TextStyle(
                                   fontFamily: 'Gilroy',
-                                  fontWeight: FontWeight.w600                              
+                                  fontWeight: FontWeight.w600
                                 )
-                              ),
-                              Text(
-                                'Spider-man',
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                  fontFamily: 'Gilroy',
-                                  fontWeight: FontWeight.w200
-                                )
-                              ),
+                              )
                             ],
                           ),
                           Text(
-                            'Spider-man',
+                            character.description,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.left,

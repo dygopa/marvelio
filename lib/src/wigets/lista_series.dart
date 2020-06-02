@@ -135,20 +135,10 @@ class _Serie extends StatelessWidget {
                                   fontWeight: FontWeight.w600                              
                                 )
                               ),
-                              Text(
-                                serie.startYear.toString() + '-' + serie.endYear.toString(),
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                  fontFamily: 'Gilroy',
-                                  fontWeight: FontWeight.w200
-                                )
-                              ),
                             ],
                           ),
                           Text(
-                            'Spider-man',
+                            serie.startYear.toString() + ' - ' + serie.endYear.toString(),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.left,

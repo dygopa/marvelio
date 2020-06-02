@@ -39,13 +39,7 @@ class EventPage extends StatelessWidget {
                               Navigator.pop(context);
                             },
                           )
-                        ),
-                        Container(
-                          child: IconButton(
-                            icon: Icon(Icons.favorite_border),
-                            onPressed:(){},
-                          )
-                        ),
+                        )
                       ],
                     ),
                   ),
@@ -79,7 +73,6 @@ class EventPage extends StatelessWidget {
                                         : Colors.black54.withOpacity(0.6),
                                         offset: Offset(0.0, 12.0),
                                         blurRadius: 20.0
-
                                       )
                                     ]
                                   ),
@@ -130,11 +123,11 @@ class EventPage extends StatelessWidget {
                               Container(
                                 child: Text( (event.description != null)
                                   ? event.description
-                                  : 'Sin descripción',
-                                  style: TextStyle(
-                                    fontFamily: 'Gilroy',
-                                    fontWeight: FontWeight.w200,
-                                    fontSize: 14.0
+                                  : 'Whitout description',
+                                    style: TextStyle(
+                                      fontFamily: 'Gilroy',
+                                      fontWeight: FontWeight.w200,
+                                      fontSize: 14.0
                                   ),
                                 ),
                               )
@@ -151,7 +144,7 @@ class EventPage extends StatelessWidget {
                                 padding: EdgeInsets.symmetric(horizontal: 20.0),
                                 margin: EdgeInsets.only(bottom: 20.0),
                                 child: Text(
-                                  'Personajes',
+                                  'Characters',
                                   style: TextStyle(
                                     fontFamily: 'Gilroy',
                                     fontWeight: FontWeight.w600,
@@ -173,7 +166,7 @@ class EventPage extends StatelessWidget {
                                   }else{
                                     return Center(
                                       child: CircularProgressIndicator()
-                                    );                                  
+                                    );
                                   }
                                 },
                               ),
@@ -190,7 +183,7 @@ class EventPage extends StatelessWidget {
                                 padding: EdgeInsets.symmetric(horizontal: 20.0),
                                 margin: EdgeInsets.only(bottom: 20.0),
                                 child: Text(
-                                  'Cómics',
+                                  'Comics',
                                   style: TextStyle(
                                     fontFamily: 'Gilroy',
                                     fontWeight: FontWeight.w600,
@@ -218,6 +211,21 @@ class EventPage extends StatelessWidget {
                               ),
                             ],
                           ),
+                        ),
+                        SizedBox(
+                          height: 20.0
+                        ),
+                        Container(
+                          alignment: Alignment.center,
+                          padding: EdgeInsets.only(left: 15.0, right: 15.0, bottom: 15.0),
+                          child: Text(
+                            'Data provided by Marvel. © 2014 Marvel',
+                            style: TextStyle(
+                              fontFamily: 'Gilroy',
+                              fontWeight: FontWeight.w200,
+                              fontSize: 12
+                            )
+                          ),
                         )
                       ],
                     ),
@@ -231,7 +239,7 @@ class EventPage extends StatelessWidget {
     );
   }
 
-  void showCover(BuildContext context, comic){
+void showCover(BuildContext context, comic){
     Dialog dialogWithImage = Dialog(
       insetPadding: EdgeInsets.all(0.0),
       clipBehavior: Clip.hardEdge,
@@ -250,30 +258,35 @@ class EventPage extends StatelessWidget {
 
   }
 
-  Widget _crearPersonajesView(List<cm.Result> personajes) {
-    return SizedBox(
-      height: 250.0,
-      child: (personajes.length > 0 ) 
-      ? CarouselSlider.builder(
-        options: CarouselOptions(
-          scrollPhysics: BouncingScrollPhysics(),
-          enableInfiniteScroll: false,
-          height: 350.0,
-          autoPlay: false,
-          enlargeCenterPage: true,
-          viewportFraction: 0.4,
-          initialPage: 1,
-        ),
-        itemCount: personajes.length,
-        itemBuilder:(context, i) => _personajeTarjeta(personajes[i], context),
-      )
-      : Text(
-        'No hay personajes disponibles'
-      )
-    ); 
+Widget _crearPersonajesView(List<cm.Result> personajes) {
+    return (personajes.length > 0 ) 
+      ? SizedBox(
+        height: 250.0,
+        child: CarouselSlider.builder(
+            options: CarouselOptions(
+              scrollPhysics: BouncingScrollPhysics(),
+              enableInfiniteScroll: false,
+              height: 350.0,
+              autoPlay: false,
+              enlargeCenterPage: true,
+              viewportFraction: 0.4,
+              initialPage: 1,
+            ),
+            itemCount: personajes.length,
+            itemBuilder:(context, i) => _personajeTarjeta(personajes[i], context),
+          )
+        )
+        : Text(
+          'Whitout characters',
+          style: TextStyle(
+            fontFamily: 'Gilroy',
+            fontWeight: FontWeight.w200,
+            fontSize: 14.0
+          )
+        );
   }
 
-  Widget _personajeTarjeta(cm.Result personaje, BuildContext context) {
+Widget _personajeTarjeta(cm.Result personaje, BuildContext context) {
     
     final theme = Provider.of<ThemeChanger>(context).getTheme();     
 
@@ -282,8 +295,6 @@ class EventPage extends StatelessWidget {
         Navigator.pushNamed(context, 'character', arguments: personaje);
       },
       child: Container(
-        // color: Colors.red,
-        // width: 200.0,
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: <Widget>[
@@ -301,7 +312,6 @@ class EventPage extends StatelessWidget {
                         : Colors.black54.withOpacity(0.7),
                       offset: Offset(0.0, 13.0),
                       blurRadius: 20.0
-
                     )
                   ]
                 ),
@@ -342,7 +352,7 @@ class EventPage extends StatelessWidget {
     );
   }
 
-  Widget _crearComicsView(List<c.Result> comics) {
+Widget _crearComicsView(List<c.Result> comics) {
     return SizedBox(
       height: 250.0,
       child: (comics.length > 0 ) 
@@ -360,12 +370,17 @@ class EventPage extends StatelessWidget {
         itemBuilder:(context, i) => _comic(comics[i], context),
       )
       : Text(
-        'No hay cómics disponibles'
+        'Whitout comics',
+        style: TextStyle(
+          fontFamily: 'Gilroy',
+          fontWeight: FontWeight.w200,
+          fontSize: 14.0
+        )
       )
     ); 
   }
 
-  Widget _comic(c.Result comic, BuildContext context) {
+Widget _comic(c.Result comic, BuildContext context) {
     
     final theme = Provider.of<ThemeChanger>(context).getTheme();     
 
@@ -393,7 +408,6 @@ class EventPage extends StatelessWidget {
                         : Colors.black54.withOpacity(0.7),
                       offset: Offset(0.0, 13.0),
                       blurRadius: 20.0
-
                     )
                   ]
                 ),
