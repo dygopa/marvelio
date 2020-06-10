@@ -303,7 +303,8 @@ class CreatorPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Container(
-                    width: 300.0,
+                    width: (width / 100) * 50,
+                    height: (height / 100) * 30,
                     margin: EdgeInsets.only(bottom: 10.0),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20.0),
@@ -401,7 +402,7 @@ class CreatorPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Container(
-                    width: (width / 100) * 30,
+                    width: (width / 100) * 50,
                     height: (height / 100) * 30,
                     margin: EdgeInsets.only(bottom: 10.0),
                     child: ClipRRect(

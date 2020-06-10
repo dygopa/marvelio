@@ -157,7 +157,7 @@ class EventPage extends StatelessWidget {
                                 builder: (BuildContext context, AsyncSnapshot<List<cm.Result>> snapshot) {
                                   if(snapshot.connectionState == ConnectionState.done){
                                     if(snapshot.hasData){
-                                      return _crearPersonajesView(snapshot.data);
+                                      return _crearPersonajesView(snapshot.data, context);
                                     }else{
                                       return Text(
                                         snapshot.error.toString()
@@ -196,7 +196,7 @@ class EventPage extends StatelessWidget {
                                 builder: (BuildContext context, AsyncSnapshot<List<c.Result>> snapshot) {
                                   if(snapshot.connectionState == ConnectionState.done){
                                     if(snapshot.hasData){
-                                      return _crearComicsView(snapshot.data);
+                                      return _crearComicsView(snapshot.data, context);
                                     }else{
                                       return Text(
                                         snapshot.error.toString()
@@ -258,15 +258,18 @@ void showCover(BuildContext context, comic){
 
   }
 
-Widget _crearPersonajesView(List<cm.Result> personajes) {
+Widget _crearPersonajesView(List<cm.Result> personajes, context) {
+
+    final height = MediaQuery.of(context).size.height;
+
     return (personajes.length > 0 ) 
       ? SizedBox(
-        height: 250.0,
+        height: (height / 100) * 40,
         child: CarouselSlider.builder(
             options: CarouselOptions(
               scrollPhysics: BouncingScrollPhysics(),
               enableInfiniteScroll: false,
-              height: 350.0,
+              height: (height / 100) * 40,
               autoPlay: false,
               enlargeCenterPage: true,
               viewportFraction: 0.4,
@@ -288,7 +291,9 @@ Widget _crearPersonajesView(List<cm.Result> personajes) {
 
 Widget _personajeTarjeta(cm.Result personaje, BuildContext context) {
     
-    final theme = Provider.of<ThemeChanger>(context).getTheme();     
+    final theme = Provider.of<ThemeChanger>(context).getTheme();
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
 
     return GestureDetector(
       onTap: (){
@@ -301,8 +306,7 @@ Widget _personajeTarjeta(cm.Result personaje, BuildContext context) {
             Positioned(
               top: 10.0,
               child: Container(
-                width: 90.0,
-                height: 170.0,
+                width: 250.0,
                 decoration: BoxDecoration(                    
                 borderRadius: BorderRadius.circular(20.0),
                   boxShadow: [
@@ -322,7 +326,8 @@ Widget _personajeTarjeta(cm.Result personaje, BuildContext context) {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Container(
-                    width: 300.0,
+                    width: (width / 100) * 50,
+                    height: (height / 100) * 30,
                     margin: EdgeInsets.only(bottom: 10.0),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20.0),
@@ -352,15 +357,18 @@ Widget _personajeTarjeta(cm.Result personaje, BuildContext context) {
     );
   }
 
-Widget _crearComicsView(List<c.Result> comics) {
+Widget _crearComicsView(List<c.Result> comics, context) {
+
+    final height = MediaQuery.of(context).size.height;
+
     return SizedBox(
-      height: 250.0,
+      height: (height / 100) * 40,
       child: (comics.length > 0 ) 
       ? CarouselSlider.builder(
         options: CarouselOptions(
           scrollPhysics: BouncingScrollPhysics(),
           enableInfiniteScroll: false,
-          height: 350.0,
+          height: (height / 100) * 40,
           autoPlay: false,
           enlargeCenterPage: true,
           viewportFraction: 0.4,
@@ -382,7 +390,9 @@ Widget _crearComicsView(List<c.Result> comics) {
 
 Widget _comic(c.Result comic, BuildContext context) {
     
-    final theme = Provider.of<ThemeChanger>(context).getTheme();     
+    final theme = Provider.of<ThemeChanger>(context).getTheme();
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
 
     return GestureDetector(
       onTap: (){
@@ -397,8 +407,7 @@ Widget _comic(c.Result comic, BuildContext context) {
             Positioned(
               top: 10.0,
               child: Container(
-                width: 90.0,
-                height: 170.0,
+                width: 250.0,
                 decoration: BoxDecoration(                    
                 borderRadius: BorderRadius.circular(20.0),
                   boxShadow: [
@@ -418,7 +427,8 @@ Widget _comic(c.Result comic, BuildContext context) {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Container(
-                    width: 300.0,
+                    width: (width / 100) * 50,
+                    height: (height / 100) * 30,
                     margin: EdgeInsets.only(bottom: 10.0),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20.0),
