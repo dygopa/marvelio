@@ -56,10 +56,9 @@ class SeriePage extends StatelessWidget {
                           width: MediaQuery.of(context).size.width,
                           height: 240.0,
                           child: Stack(
+                            alignment: Alignment.topCenter,
                             children: <Widget>[
                               Positioned(
-                                left: MediaQuery.of(context).size.width - 215.0,
-                                top: 10.0,
                                 child: Container(
                                   width: 115.0,
                                   height: 200.0,
@@ -79,7 +78,6 @@ class SeriePage extends StatelessWidget {
                                 ),
                               ),
                               Positioned(
-                                left: MediaQuery.of(context).size.width - 225.0,
                                 child: GestureDetector(
                                   onTap: (){
                                     showCover(context, serie);
@@ -160,7 +158,7 @@ class SeriePage extends StatelessWidget {
                                 builder: (BuildContext context, AsyncSnapshot<List<c.Result>> snapshot) {
                                   if(snapshot.connectionState == ConnectionState.done){
                                     if(snapshot.hasData){
-                                      return _crearComicsView(snapshot.data);
+                                      return _crearComicsView(snapshot.data, context);
                                     }else{
                                       return Text(
                                         snapshot.error.toString()
@@ -199,7 +197,7 @@ class SeriePage extends StatelessWidget {
                                 builder: (BuildContext context, AsyncSnapshot<List<cm.Result>> snapshot) {
                                   if(snapshot.connectionState == ConnectionState.done){
                                     if(snapshot.hasData){
-                                      return _crearPersonajesView(snapshot.data);
+                                      return _crearPersonajesView(snapshot.data, context);
                                     }else{
                                       return Text(
                                         snapshot.error.toString()
@@ -259,15 +257,18 @@ class SeriePage extends StatelessWidget {
 
   }
 
-  Widget _crearComicsView(List<c.Result> comics) {
+  Widget _crearComicsView(List<c.Result> comics, context) {
+
+    final height = MediaQuery.of(context).size.height;
+
     return SizedBox(
-      height: 250.0,
+      height: (height / 100) * 40,
       child: (comics.length > 0 ) 
       ? CarouselSlider.builder(
         options: CarouselOptions(
           scrollPhysics: BouncingScrollPhysics(),
           enableInfiniteScroll: false,
-          height: 350.0,
+          height: (height / 100) * 40,
           autoPlay: false,
           enlargeCenterPage: true,
           viewportFraction: 0.4,
@@ -290,6 +291,8 @@ class SeriePage extends StatelessWidget {
   Widget _comic(c.Result comic, BuildContext context) {
     
     final theme = Provider.of<ThemeChanger>(context).getTheme();     
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
 
     return GestureDetector(
       onTap: (){
@@ -302,8 +305,7 @@ class SeriePage extends StatelessWidget {
             Positioned(
               top: 10.0,
               child: Container(
-                width: 90.0,
-                height: 170.0,
+                width: 250.0,
                 decoration: BoxDecoration(                    
                 borderRadius: BorderRadius.circular(20.0),
                   boxShadow: [
@@ -323,7 +325,8 @@ class SeriePage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Container(
-                    width: 300.0,
+                    width: (width / 100) * 30,
+                    height: (height / 100) * 30,
                     margin: EdgeInsets.only(bottom: 10.0),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20.0),
@@ -353,15 +356,18 @@ class SeriePage extends StatelessWidget {
     );
   }
 
-  Widget _crearPersonajesView(List<cm.Result> personajes) {
+  Widget _crearPersonajesView(List<cm.Result> personajes, context) {
+
+    final height = MediaQuery.of(context).size.height;
+
     return SizedBox(
-      height: 250.0,
+      height: (height / 100) * 40,
       child: (personajes.length > 0 ) 
       ? CarouselSlider.builder(
         options: CarouselOptions(
           scrollPhysics: BouncingScrollPhysics(),
           enableInfiniteScroll: false,
-          height: 350.0,
+          height: (height / 100) * 40,
           autoPlay: false,
           enlargeCenterPage: true,
           viewportFraction: 0.4,
@@ -384,6 +390,8 @@ class SeriePage extends StatelessWidget {
   Widget _personajeTarjeta(cm.Result personaje, BuildContext context) {
     
     final theme = Provider.of<ThemeChanger>(context).getTheme();     
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
 
     return GestureDetector(
       onTap: (){
@@ -396,8 +404,7 @@ class SeriePage extends StatelessWidget {
             Positioned(
               top: 10.0,
               child: Container(
-                width: 90.0,
-                height: 170.0,
+                width: 250.0,
                 decoration: BoxDecoration(                    
                 borderRadius: BorderRadius.circular(20.0),
                   boxShadow: [
@@ -417,7 +424,8 @@ class SeriePage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Container(
-                    width: 300.0,
+                    width: (width / 100) * 30,
+                    height: (height / 100) * 30,
                     margin: EdgeInsets.only(bottom: 10.0),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20.0),

@@ -114,7 +114,7 @@ class CreatorPage extends StatelessWidget {
                           )
                         ),
                         //Series
-                        Container(              
+                        Container(
                           width: MediaQuery.of(context).size.width,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -136,7 +136,7 @@ class CreatorPage extends StatelessWidget {
                                 builder: (BuildContext context, AsyncSnapshot<List<s.Result>> snapshot) {
                                   if(snapshot.connectionState == ConnectionState.done){
                                     if(snapshot.hasData){
-                                      return _crearSeriesView(snapshot.data);
+                                      return _crearSeriesView(snapshot.data, context);
                                     }else{
                                       return Text(
                                         snapshot.error.toString()
@@ -153,7 +153,7 @@ class CreatorPage extends StatelessWidget {
                           ),
                         ),
                         // Comics
-                        Container(              
+                        Container(
                           width: MediaQuery.of(context).size.width,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -175,7 +175,7 @@ class CreatorPage extends StatelessWidget {
                                 builder: (BuildContext context, AsyncSnapshot<List<c.Result>> snapshot) {
                                   if(snapshot.connectionState == ConnectionState.done){
                                     if(snapshot.hasData){
-                                      return _crearComicsView(snapshot.data);
+                                      return _crearComicsView(snapshot.data, context);
                                     }else{
                                       return Text(
                                         snapshot.error.toString()
@@ -235,15 +235,18 @@ class CreatorPage extends StatelessWidget {
 
   }
 
-  Widget _crearSeriesView(List<s.Result> series) {
+  Widget _crearSeriesView(List<s.Result> series, context) {
+
+    final height = MediaQuery.of(context).size.height;
+
     return SizedBox(
-      height: 250.0,
+      height: (height / 100) * 40,
       child: (series.length > 0 ) 
       ? CarouselSlider.builder(
         options: CarouselOptions(
           scrollPhysics: BouncingScrollPhysics(),
           enableInfiniteScroll: false,
-          height: 350.0,
+          height: (height / 100) * 40,
           autoPlay: false,
           enlargeCenterPage: true,
           viewportFraction: 0.4,
@@ -266,6 +269,8 @@ class CreatorPage extends StatelessWidget {
   Widget _series(s.Result serie, BuildContext context) {
     
     final theme = Provider.of<ThemeChanger>(context).getTheme();     
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
 
     return GestureDetector(
       onTap: (){
@@ -278,8 +283,7 @@ class CreatorPage extends StatelessWidget {
             Positioned(
               top: 10.0,
               child: Container(
-                width: 90.0,
-                height: 170.0,
+                width: 250.0,
                 decoration: BoxDecoration(                    
                 borderRadius: BorderRadius.circular(20.0),
                   boxShadow: [
@@ -329,15 +333,18 @@ class CreatorPage extends StatelessWidget {
     );
   }
 
-  Widget _crearComicsView(List<c.Result> comics) {
+  Widget _crearComicsView(List<c.Result> comics, context) {
+
+    final height = MediaQuery.of(context).size.height; 
+
     return SizedBox(
-      height: 250.0,
+      height: (height / 100) * 40,
       child: (comics.length > 0 ) 
       ? CarouselSlider.builder(
         options: CarouselOptions(
           scrollPhysics: BouncingScrollPhysics(),
           enableInfiniteScroll: false,
-          height: 350.0,
+          height: (height / 100) * 40,
           autoPlay: false,
           enlargeCenterPage: true,
           viewportFraction: 0.4,
@@ -360,6 +367,8 @@ class CreatorPage extends StatelessWidget {
   Widget _comic(c.Result comic, BuildContext context) {
     
     final theme = Provider.of<ThemeChanger>(context).getTheme();     
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
 
     return GestureDetector(
       onTap: (){
@@ -372,8 +381,7 @@ class CreatorPage extends StatelessWidget {
             Positioned(
               top: 10.0,
               child: Container(
-                width: 90.0,
-                height: 170.0,
+                width: 250.0,
                 decoration: BoxDecoration(                    
                 borderRadius: BorderRadius.circular(20.0),
                   boxShadow: [
@@ -393,7 +401,8 @@ class CreatorPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Container(
-                    width: 300.0,
+                    width: (width / 100) * 30,
+                    height: (height / 100) * 30,
                     margin: EdgeInsets.only(bottom: 10.0),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20.0),
